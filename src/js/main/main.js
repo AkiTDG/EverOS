@@ -25,7 +25,7 @@ const homeMenu = `
 | [3. Calculator ]                           |
 |                                            |
 | Type "help" for important commands         |
-| Press F5 (Or refresh icon)to restart OS    |
+| Press F5(Or refresh icon)to restart OS    |
 +--------------------------------------------+`;
 
 //help menu
