@@ -143,8 +143,10 @@ inputField.addEventListener('keydown', function(event) {
 
 writeToConsole(asciitext);
 writeToConsole('+--------------------------------------------------+');
+writeToConsole('|==================================================|');
 writeToConsole('|        =======[Welcome to EverOS!]=======        |');
 writeToConsole('|Today is:   '+new Date().toLocaleDateString()+   '|');
-writeToConsole('|Time check:'+new new Date().toLocaleTimeString()+'|');
+writeToConsole('|Time check: '+new Date().toLocaleTimeString()+   '|');
+writeToConsole('|==================================================|');
 writeToConsole('+--------------------------------------------------+');
 writeToConsole(homeMenu);
