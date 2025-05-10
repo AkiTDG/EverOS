@@ -1,4 +1,4 @@
-//import calculatorFactory from './src/js/features/calc.js';
+import {calculator} from 'src/js/features/calc.js';
 
 const consoleDiv = document.getElementById('console');
 const inputField = document.getElementById('input');
@@ -40,31 +40,11 @@ const helpText = `
 +------------------------------------------------------------------------+`;
 
 function writeToConsole(text) {
+    const consoleDiv = document.getElementById('console');
     consoleDiv.textContent += text + '\n';
     consoleDiv.scrollTop = consoleDiv.scrollHeight;
-}
+}window.writeToConsole = writeToConsole;
 
-//const calculator = calculatorFactory(writeToConsole);
-function calculator(expression) {
-    try {
-      const cleanExpression = expression.replace(/\s+/g, '');
-
-       if (!/^[0-9+\-*/().%]+$/.test(cleanExpression)) {
-           throw new Error('Invalid characters.');
-        }
-
-        const result = new Function('return '+cleanExpression)();
-        if (result === undefined || isNaN(result)) {
-            throw new Error('Syntax error');
-        }
-        if (!isFinite(result)) {
-            throw new Error('Math error');
-        }
-        writeToConsole(`= ${result}`);
-    } catch (error) {
-        writeToConsole('Statement error');
-    }
-} 
 function handleCommand(rawInput) {
     const command = rawInput.trim();
     const lowerCommand = command.toLowerCase();
