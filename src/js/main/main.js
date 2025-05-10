@@ -1,4 +1,4 @@
-import {calculator} from 'src/js/features/calc.js';
+import {calculator} from 'src/js/features/calculator.js';
 
 const consoleDiv = document.getElementById('console');
 const inputField = document.getElementById('input');
