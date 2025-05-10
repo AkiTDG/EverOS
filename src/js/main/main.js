@@ -64,11 +64,11 @@ function handleCommand(rawInput) {
                 break;
             case 'date':
                 currentFeature = 'date';
-                writeToConsole('Date: ' + new Date().toLocaleDateString());
+                writeToConsole('[Date: ]' + new Date().toLocaleDateString());
                 break;
             case 'time':
                 currentFeature = 'time';
-                writeToConsole('Time: ' + new Date().toLocaleTimeString());
+                writeToConsole('[Time: ]' + new Date().toLocaleTimeString());
                 break;
             case 'calc':
                 currentFeature = 'calculator';
