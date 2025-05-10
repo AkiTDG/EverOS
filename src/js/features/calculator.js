@@ -18,16 +18,19 @@ export function calculator(expression) {
         writeToConsole('Statement error');
     }
 } 
+
 //calc menu
 export const calcUi = `
 +------------------------------------------------------------------------+
+|========================================================================|
 | Entered Calculator mode. Type "exit" to leave.                         |
-|                                                                        |        
+| Type "exit" to leave.                                                  |
 | <==Operations==>                                                       |
 | [+: Addition                                                         ] |
 | [-: Subtraction. Can also use to indicate a negative numerical value.] |
 | [*: Multiplication                                                   ] |
 | [/: Division                                                         ] |
 | [%: Modulus. Takes division remainder as result.                     ] |
+|========================================================================|
 +------------------------------------------------------------------------+
 `;
