@@ -85,11 +85,12 @@ function handleCommand(rawInput) {
         return;
     }
     if (lowerCommand === 'exit') {
-        if (currentFeature === 'home' || currentFeature === 'exit') {
-        writeToConsole('No feature is currently active.')}
+        if (currentFeature === 'home' || currentFeature === 'exit'){
+        writeToConsole('No feature is currently active.')
+    }
         else {currentFeature = 'exit';
-        writeToConsole('Feature closed successfully.');
-        return;}
+        writeToConsole('Feature closed successfully.');        
+    }return;
     }
     if (currentFeature === 'calculator') {
         calculator(command);
