@@ -145,8 +145,8 @@ writeToConsole(asciitext);
 writeToConsole('+--------------------------------------------------+');
 writeToConsole('|==================================================|');
 writeToConsole('|        =======[Welcome to EverOS!]=======        |');
-writeToConsole('| Today is:   ' + new Date().toLocaleDateString().padEnd(15) + '|');
-writeToConsole('| Time check: ' + new Date().toLocaleTimeString().padEnd(15) + '|');
+writeToConsole('| Today is:   ' + new Date().toLocaleDateString().padEnd(21) + '|');
+writeToConsole('| Time check: ' + new Date().toLocaleTimeString().padEnd(21) + '|');
 writeToConsole('|==================================================|');
 writeToConsole('+--------------------------------------------------+');
 
