@@ -18,27 +18,39 @@ const asciitext = `
 `;
 const homeMenu = `
 +--------------------------------------------+
-| Features:                                  |
+|============================================|                                            
+| Features & (command name):                 |
 |                                            |
-| [1. Date       ]                           |
-| [2. Time       ]                           |
-| [3. Calculator ]                           |
+| [1.Simple Calculator          (calc)]      |
+| [2.Metric system converter     (msc)]      |
+| [3.Temperature converter        (tc)]      |
+| [4.Day/Time converter          (dtc)]      |
 |                                            |
 | Type "help" for important commands         |
-| Press F5(Or refresh icon)to restart OS     |
+| Press F5 (Or refresh icon)to restart OS    |
+|============================================|                                            
 +--------------------------------------------+`;
 
 //help menu
 const helpText = `
-+------------------------------------------------------------------------+
-|                                                                        |
-| Available commands:                                                    |
-| [nav [feature]: Navigate to a feature (date, time, calculator)]        |
-| [exit: Exit current feature                                   ]        |
-| [nav home: Go to home menu                                    ]        |
-| [clear: Clear the console                                     ]        |
-|                                                                        |
-+------------------------------------------------------------------------+`;
++---------------------------------------------------------------------------------+
+|=================================================================================|
+| Available commands:                                                             |
+| [nav [feature]: Navigate to a feature (e.g. nav calc)         ]                 |
+| [exit: Exit current feature                                   ]                 |
+| [nav home: Go to home menu                                    ]                 |
+| [clear: Clear the console                                     ]                 |                                           
+|                                                                                 |                                           
+| Feature functions:                                                              |                                           
+| note: Features with * are under implementation                                  |                                            
+| [1. Simple Calculator (calc)]: Calculates simple mathematical problems          |                                            
+| [2. Metric system converter (msc)]*: Calculates any metric system measurement   |
+| [3. Temperature converter (tc)]*: Converts degree to fahrenheit & vice versa    |
+| [4. Day/Time converter (dtc)]*: Calculates the measurement of time              |                                                                               
+| in its equivalents (e.g., days to hours and vice-versa)                         |
+|=================================================================================|                                                                                                                       
++---------------------------------------------------------------------------------+ 
+`;
 
 //U.I. backbone
 function writeToConsole(text) {
@@ -62,18 +74,22 @@ function handleCommand(rawInput) {
             case 'help':
                 writeToConsole(helpText);
                 break;
-            case 'date':
-                currentFeature = 'date';
-                writeToConsole('[Date: ' + new Date().toLocaleDateString()+']');
-                break;
-            case 'time':
-                currentFeature = 'time';
-                writeToConsole('[Time: ' + new Date().toLocaleTimeString()+']');
-                break;
             case 'calc':
                 currentFeature = 'calculator';
                 writeToConsole(calcUi);
                 break;
+            case 'msc':
+                currentFeature = 'Metric system converter';
+                writeToConsole('This feature is under implementation');
+                break;
+            case 'tc':
+                currentFeature = 'Temperature converter';
+                writeToConsole('This feature is under implementation');
+                break;   
+            case 'dtc':
+                currentFeature = 'Day/Time converter';
+                writeToConsole('This feature is under implementation');
+                break; 
             default:
                 writeToConsole('Unknown feature. Type "help" for available commands.');
         }
@@ -116,7 +132,11 @@ inputField.addEventListener('keydown', function(event) {
 });
 
 writeToConsole(asciitext);
-writeToConsole('+--------------------------------------------+');
-writeToConsole('|    =======[Welcome to EverOS!]=======      |');
-writeToConsole('+--------------------------------------------+');
+writeToConsole('+--------------------------------------------------+');
+writeToConsole('|==================================================|');
+writeToConsole('|        =======[Welcome to EverOS!]=======        |');
+writeToConsole('|Today is:'+new Date().toLocaleDateString()+      '|');
+writeToConsole('|Time check:'+new new Date().toLocaleTimeString()+'|');
+writeToConsole('|==================================================|');
+writeToConsole('+--------------------------------------------------+');
 writeToConsole(homeMenu);
