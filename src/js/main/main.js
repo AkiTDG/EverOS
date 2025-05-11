@@ -105,11 +105,10 @@ function handleCommand(rawInput) {
         }
         return;
     }
-    if (currentFeature !== 'home') {
+    if (currentFeature !== 'home' || currentFeature !== 'exit') {
         if (lowerCommand === 'exit') {
-            currentFeature = 'home';
-            writeToConsole('Feature closed successfully. Returning to home.');
-            writeToConsole(homeMenu);
+            currentFeature = 'exit';
+            writeToConsole('Feature closed successfully.');
             return;
         }
          if (lowerCommand === 'help') {
@@ -120,8 +119,8 @@ function handleCommand(rawInput) {
             calculator(command);
             return;
         }
-        writeToConsole('You must exit the current feature before using other commands.');
-        return;
+    writeToConsole('You must exit the current feature before using other commands.');
+    return;
     }  
 writeToConsole('Unknown command or wrong context. Type "help" for assistance.');          
 }    
