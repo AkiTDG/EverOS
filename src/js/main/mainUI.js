@@ -1,0 +1,46 @@
+//main UI
+export const asciitext = `
+ /$$$$$$$$                              /$$$$$$   /$$$$$$ 
+| $$_____/                             /$$__  $$ /$$__  $$
+| $$    /$$    /$$ /$$$$$$   /$$$$$$  | $$  \\ $$| $$  \\__/
+| $$$$$|  $$  /$$//$$__  $$ /$$__  $$ | $$  | $$|  $$$$$$ 
+| $$__/ \\  $$/$$/| $$$$$$$$| $$  \\__/ | $$  | $$ \\____  $$
+| $$     \\  $$$/ | $$_____/| $$       | $$  | $$ /$$  \\ $$
+| $$$$$$$$\\  $/  |  $$$$$$$| $$       |  $$$$$$/|  $$$$$$/
+|________/ \\_/    \\_______/|__/        \\______/  \\______/ 
+`;
+export const homeMenu = `
++--------------------------------------------+
+|============================================|                                            
+| Features & (command name):                 |
+|                                            |
+| [1.Simple Calculator          (calc)]      |
+| [2.Metric system converter     (msc)]      |
+| [3.Temperature converter        (tc)]      |
+| [4.Day/Time converter          (dtc)]      |
+|                                            |
+| Type "help" for important commands         |
+| Press F5 (Or refresh icon)to restart OS    |
+|============================================|                                            
++--------------------------------------------+`;
+
+//help menu
+export const helpMenu = `
++---------------------------------------------------------------------------------+
+|=================================================================================|
+| Available commands:                                                             |
+| [nav [feature]: Navigate to a feature (e.g. nav calc)         ]                 |
+| [exit: Exit current feature                                   ]                 |
+| [nav home: Go to home menu                                    ]                 |
+| [clear: Clear the console                                     ]                 |                                           
+|                                                                                 |                                           
+| Feature functions:                                                              |                                           
+| note: Features with * are under implementation                                  |                                            
+| [1. Simple Calculator (calc)]: Calculates simple mathematical problems          |                                            
+| [2. Metric system converter (msc)]*: Calculates any metric system measurement   |
+| [3. Temperature converter (tc)]*: Converts degree to fahrenheit & vice versa    |
+| [4. Day/Time converter (dtc)]*: Calculates the measurement of time              |                                                                               
+| in its equivalents (e.g., days to hours and vice-versa)                         |
+|=================================================================================|                                                                                                                       
++---------------------------------------------------------------------------------+ 
+`;
