@@ -1,6 +1,6 @@
 import {calculator,calcUi} from '../features/calculator.js';
 import {handleCommand} from './commandHandler.js';
-import {asciitext,homeMenu,helpMenu} from './mainUI.js';
+import {homeMenu,helpMenu} from './mainUI.js';
 
 //Console backbone
 const consoleDiv = document.getElementById('console');
@@ -42,15 +42,4 @@ inputField.addEventListener('keydown', function(event) {
     }
 });
 
-writeToConsole(asciitext);
-writeToConsole('+--------------------------------------------------+');
-writeToConsole('|==================================================|');
-writeToConsole('|        =======[Welcome to EverOS!]=======        |');
-writeToConsole('| Today is:   ' + new Date().toLocaleDateString().padEnd(37) + '|');
-writeToConsole('| Time check: ' + new Date().toLocaleTimeString(undefined, {
-  hour: '2-digit',
-  minute: '2-digit',
-}).padEnd(37) + '|');
-writeToConsole('|==================================================|');
-writeToConsole('+--------------------------------------------------+');
 writeToConsole(homeMenu);
