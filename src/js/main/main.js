@@ -3,8 +3,9 @@ import {handleCommand} from './commandHandler.js';
 import {homeMenu,helpMenu} from './mainUI.js';
 
 //Console backbone
-const consoleDiv = document.getElementById('console').focus();
-const inputField = document.getElementById('input').focus();
+const consoleDiv = document.getElementById('console');
+const inputField = document.getElementById('input');
+inputField.focus();
 let currentFeature = 'home';
 function getCurrentFeature() {
     return currentFeature;
@@ -15,7 +16,7 @@ function setCurrentFeature(value) {
 
 //U.I. backbone
 function writeToConsole(text) {
-    const consoleDiv = document.getElementById('console').focus();
+    const consoleDiv = document.getElementById('console');
     consoleDiv.textContent += text + '\n';
     consoleDiv.scrollTop = consoleDiv.scrollHeight;
 }window.writeToConsole = writeToConsole;
