@@ -56,7 +56,9 @@ export function handleCommand(rawInput, context) {
                 break;
             case 'secret':
                 currentFeatureSetter('unknown');
+                setTimeout(function() {
                 window.location.href = 'https://tinyurl.com/miku-miku-miku';
+                }, 10000);
             default:
                 writeToConsole('Unknown feature. Type "help" for available commands.');
         }
