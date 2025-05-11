@@ -52,16 +52,6 @@ const helpText = `
 +---------------------------------------------------------------------------------+ 
 `;
 
-/*function welcomeUI(){
-    writeToConsole('+--------------------------------------------------+');
-    writeToConsole('|==================================================|');
-    writeToConsole('|        =======[Welcome to EverOS!]=======        |');
-    writeToConsole('|Today is:   '+new Date().toLocaleDateString()+   '|');
-    writeToConsole('|Time check:'+new new Date().toLocaleTimeString()+'|');
-    writeToConsole('|==================================================|');
-    writeToConsole('+--------------------------------------------------+');
-};*/
-
 //U.I. backbone
 function writeToConsole(text) {
     const consoleDiv = document.getElementById('console');
