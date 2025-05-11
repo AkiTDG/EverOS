@@ -48,7 +48,6 @@ export function handleCommand(rawInput, context) {
                 break;
             case 'tc':
                 currentFeatureSetter('Temperature converter');
-                resetTempMode();
                 writeToConsole(tcUi);
                 break;
             case 'dtc':
