@@ -48,17 +48,13 @@ export function handleCommand(rawInput, context) {
                 break;
             case 'tc':
                 currentFeatureSetter('Temperature converter');
-                writeToConsole('This feature is under implementation');
+                resetTempMode();
+                writeToConsole(tcUi);
                 break;
             case 'dtc':
                 currentFeatureSetter('Day/Time converter');
                 writeToConsole('This feature is under implementation');
                 break;
-            case 'secret':
-                currentFeatureSetter('unknown');
-                setTimeout(function() {
-                window.location.href = 'https://tinyurl.com/miku-miku-miku';
-                }, 10000);
             default:
                 writeToConsole('Unknown feature. Type "help" for available commands.');
         }
@@ -66,6 +62,11 @@ export function handleCommand(rawInput, context) {
     }
     if (currentFeatureGetter() === 'calculator') {
         calculator(command);
+        return;
+    }
+    if (currentFeatureGetter() === 'Temperature converter') {
+        const output=temperatureConverter(command);
+        writeToConsole(output);
         return;
     }
     writeToConsole('Unknown command or wrong context. Type "help" for assistance.');
