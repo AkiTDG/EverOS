@@ -7,13 +7,10 @@ export function handleCommand(rawInput, context) {
         consoleDiv,
         homeMenu,
         helpMenu,
-        calculator,
-        calcUi,
-        temperatureConverter,
-        resetTempMode,
-        tcUi
-    } = context;
-
+        calculator,calcUi,
+        temperatureConverter,resetTempMode,tcUi
+     } = context;   
+    
     const command = rawInput.trim();
     const lowerCommand = command.toLowerCase();
     if (command === '') return;
