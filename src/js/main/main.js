@@ -74,6 +74,27 @@ function handleCommand(rawInput) {
     const command = rawInput.trim();
     const lowerCommand = command.toLowerCase();
     if (command === '') return;
+    if (currentFeature !== 'home' || currentFeature !== 'exit') {
+        if (lowerCommand === 'exit') {
+            currentFeature = 'exit';
+            writeToConsole('Feature closed successfully.');
+            return;
+        }
+         if (lowerCommand === 'help') {
+            writeToConsole(helpText);
+            return;
+        }
+        if (lowerCommand === 'clear') {
+        consoleDiv.textContent = '';
+        return;
+        }
+        if (currentFeature === 'calculator') {
+            calculator(command);
+            return;
+        }
+    writeToConsole('You must exit the current feature before using other commands.');
+    return;
+    }  
     if (lowerCommand.startsWith('nav ')) {
         const target = lowerCommand.substring(4);
         switch (target) {
@@ -105,27 +126,7 @@ function handleCommand(rawInput) {
         }
         return;
     }
-    if (currentFeature !== 'home' || currentFeature !== 'exit') {
-        if (lowerCommand === 'exit') {
-            currentFeature = 'exit';
-            writeToConsole('Feature closed successfully.');
-            return;
-        }
-         if (lowerCommand === 'help') {
-            writeToConsole(helpText);
-            return;
-        }
-        if (lowerCommand === 'clear') {
-        consoleDiv.textContent = '';
-        return;
-        }
-        if (currentFeature === 'calculator') {
-            calculator(command);
-            return;
-        }
-    writeToConsole('You must exit the current feature before using other commands.');
-    return;
-    }  
+    
 writeToConsole('Unknown command or wrong context. Type "help" for assistance.');          
 }    
 
