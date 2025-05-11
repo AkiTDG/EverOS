@@ -19,8 +19,7 @@ export function handleCommand(rawInput, context) {
             writeToConsole('No feature is currently active.');
         } else {
             currentFeatureSetter('exit');
-            writeToConsole('Feature closed successfully. Returning to home.');
-            writeToConsole(homeMenu);
+            writeToConsole('Feature closed successfully.');
         }
         return;
     }
