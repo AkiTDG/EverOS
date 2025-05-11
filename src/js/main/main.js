@@ -4,7 +4,7 @@ import {homeMenu,helpMenu} from './mainUI.js';
 
 //Console backbone
 const consoleDiv = document.getElementById('console');
-const inputField = document.getElementById('input');
+const inputField = document.getElementById('input').focus();
 let currentFeature = 'home';
 function getCurrentFeature() {
     return currentFeature;
