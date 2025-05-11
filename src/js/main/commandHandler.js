@@ -3,12 +3,15 @@ export function handleCommand(rawInput, context) {
     const {
         currentFeatureGetter,
         currentFeatureSetter,
-        writeToConsole,
-        calculator,
-        calcUi,
+        writeToConsole,       
         consoleDiv,
         homeMenu,
-        helpMenu
+        helpMenu,
+        calculator,
+        calcUi,
+        temperatureConverter,
+        resetTempMode,
+        tcUi
     } = context;
 
     const command = rawInput.trim();
@@ -23,6 +26,7 @@ export function handleCommand(rawInput, context) {
         }
         return;
     }*/
+    //Shell commands
     if (lowerCommand === 'clear') {
         consoleDiv.textContent = '';
         return;
@@ -31,6 +35,7 @@ export function handleCommand(rawInput, context) {
         writeToConsole(helpMenu);
         return;
     }
+    //Navigator commands
     if (lowerCommand.startsWith('nav ')) {
         const target = lowerCommand.substring(4);
         switch (target) {
@@ -48,6 +53,7 @@ export function handleCommand(rawInput, context) {
                 break;
             case 'tc':
                 currentFeatureSetter('Temperature converter');
+                resetTempMode();
                 writeToConsole(tcUi);
                 break;
             case 'dtc':
@@ -59,6 +65,7 @@ export function handleCommand(rawInput, context) {
         }
         return;
     }
+    //Opens feature
     if (currentFeatureGetter() === 'calculator') {
         calculator(command);
         return;
