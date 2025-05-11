@@ -1,7 +1,7 @@
 import {handleCommand} from './commandHandler.js';
 import {homeMenu,helpMenu} from './mainUI.js';
 import {calculator,calcUi} from '../features/calculator.js';
-import {temperatureConverter,resetTempMode,tcUi} from '../features/temperature converter.js';
+import {temperatureConverter,resetTempMode,tcUi} from '../features/temperature_converter.js';
 
 //Console backbone
 const consoleDiv = document.getElementById('console');
