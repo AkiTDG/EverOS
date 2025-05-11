@@ -33,9 +33,11 @@ export function temperatureConverter(input) {
 
 export const tcUi = `
 +------------------------------------------------------------------+
+|==================================================================|
 | Temperature Converter                                            |
 |                                                                  |
 | <==Operations==>                                                 |
 | [Press 1 to convert Degree Celsius(°C) to Degree Fahrenheit(°F)] |
 | [Press 2 to convert Degree Fahrenheit(°F) to Degree Celsius(°C)] |
+|==================================================================|
 +------------------------------------------------------------------+`;
