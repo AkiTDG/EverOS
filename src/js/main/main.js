@@ -115,6 +115,10 @@ function handleCommand(rawInput) {
             writeToConsole(helpText);
             return;
         }
+        if (lowerCommand === 'clear') {
+        consoleDiv.textContent = '';
+        return;
+        }
         if (currentFeature === 'calculator') {
             calculator(command);
             return;
