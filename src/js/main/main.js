@@ -33,7 +33,7 @@ inputField.addEventListener('keydown', function(event) {
             writeToConsole,
             calculator,
             consoleDiv,
-            homeMenu: homeMenu(),
+            homeMenuGetter: homeMenu,
             helpMenu,
             calcUi
         });
@@ -42,4 +42,4 @@ inputField.addEventListener('keydown', function(event) {
     }
 });
 
-writeToConsole(homeMenu());
+writeToConsole(homeMenuGetter());
