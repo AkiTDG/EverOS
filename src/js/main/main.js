@@ -1,47 +1,76 @@
-import {handleCommand} from './commandHandler.js';
-import {homeMenu,helpMenu} from './mainUI.js';
-import {calculator,calcUi} from '../features/calculator.js';
-import {temperatureConverter,resetTempMode,tcUi} from '../features/temperature_converter.js';
 
-//Console backbone
-const consoleDiv = document.getElementById('console');
-const inputField = document.getElementById('input');
-inputField.focus();
-let currentFeature = 'home';
-function getCurrentFeature() {
-    return currentFeature;
-}
-function setCurrentFeature(value) {
-    currentFeature = value;
-}
+export function handleCommand(rawInput, context) {
+    const {
+        currentFeatureGetter,
+        currentFeatureSetter,
+        writeToConsole,       
+        consoleDiv,
+        homeMenu,
+        helpMenu,
+        calculator,
+        calcUi,
+        temperatureConverter,
+        resetTempMode,
+        tcUi
+    } = context;
 
-//U.I. backbone
-function writeToConsole(text) {
-    const consoleDiv = document.getElementById('console');
-    consoleDiv.textContent += text + '\n';
-    consoleDiv.scrollTop = consoleDiv.scrollHeight;
-}window.writeToConsole = writeToConsole;
-
-//input logic
-inputField.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        const command = inputField.value;
-        if (command.trim() !== '') {
-            writeToConsole('>> ' + command);
+    const command = rawInput.trim();
+    const lowerCommand = command.toLowerCase();
+    if (command === '') return;
+    /*if (lowerCommand === 'exit') {
+        if (currentFeatureGetter() === 'home') {
+            writeToConsole('No feature is currently active.');
+        } else {
+            currentFeatureSetter('exit');
+            writeToConsole('Feature closed successfully.');
         }
-        handleCommand(command, {
-            currentFeatureGetter: getCurrentFeature,
-            currentFeatureSetter: setCurrentFeature,
-            writeToConsole,
-            consoleDiv,
-            homeMenu: homeMenu(),
-            helpMenu,
-            calculator,calcUi,
-            temperatureConverter,tcUi,resetTempMode
-        });
-
-        inputField.value = '';
+        return;
+    }*/
+    if (lowerCommand === 'clear') {
+        consoleDiv.textContent = '';
+        return;
     }
-});
-
-writeToConsole(homeMenu());
+    if (lowerCommand === 'help') {
+        writeToConsole(helpMenu);
+        return;
+    }
+    if (lowerCommand.startsWith('nav ')) {
+        const target = lowerCommand.substring(4);
+        switch (target) {
+            case 'home':
+                currentFeatureSetter('home');
+                writeToConsole(homeMenu);
+                break;
+            case 'calc':
+                currentFeatureSetter('calculator');
+                writeToConsole(calcUi);
+                break;
+            case 'msc':
+                currentFeatureSetter('Metric system converter');
+                writeToConsole('This feature is under implementation');
+                break;
+            case 'tc':
+                currentFeatureSetter('Temperature converter');
+                resetTempMode();
+                writeToConsole(tcUi);
+                break;
+            case 'dtc':
+                currentFeatureSetter('Day/Time converter');
+                writeToConsole('This feature is under implementation');
+                break;
+            default:
+                writeToConsole('Unknown feature. Type "help" for available commands.');
+        }
+        return;
+    }
+    if (currentFeatureGetter() === 'calculator') {
+        calculator(command);
+        return;
+    }
+    if (currentFeatureGetter() === 'Temperature converter') {
+        const output=temperatureConverter(command);
+        writeToConsole(output);
+        return;
+    }
+    writeToConsole('Unknown command or wrong context. Type "help" for assistance.');
+}
