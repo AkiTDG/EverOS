@@ -3,7 +3,7 @@ import {handleCommand} from './commandHandler.js';
 import {homeMenu,helpMenu} from './mainUI.js';
 
 //Console backbone
-const consoleDiv = document.getElementById('console');
+const consoleDiv = document.getElementById('console').focus;
 const inputField = document.getElementById('input').focus();
 let currentFeature = 'home';
 function getCurrentFeature() {
