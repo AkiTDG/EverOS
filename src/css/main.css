@@ -9,11 +9,11 @@ body {
 
 #console {
     width: 50%;
-    height: 400px
+    height: 400px;
     max-width: 100%;
     border: 1px solid #00ff00;
     padding: 10px;
-    overflow-x: auto; 
+    overflow-x: auto;
     overflow-y: auto;
     white-space: pre; 
     font-family: monospace;
@@ -22,7 +22,6 @@ body {
     margin: auto;
     scrollbar-color: #00ff00 black;
 }
-
 
 input[type="text"] {
     width: 50%;
