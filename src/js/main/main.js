@@ -2,8 +2,6 @@ import{handleCommand} from "./commandHandler.js"
 import{homeMenu,helpMenu} from "./mainUI.js"
 import{calculator,calcUi} from "../features/calculator.js"
 import{temperatureConverter,resetTempMode,tcUi} from "../features/temperature_converter.js"
-import {measurementConverter,mscUI} from "../features/measurement_converter.js"
-
 
 const consoleDiv = document.getElementById("console")
 const inputField = document.getElementById("input")
@@ -45,8 +43,7 @@ inputField.addEventListener("keydown", function (event)
 		homeMenu: homeMenu(),
 		helpMenu: helpMenu,
 		calculator: calculator,calcUi: calcUi,
-		temperatureConverter: temperatureConverter,tcUi: tcUi,resetTempMode: resetTempMode,
-		measurementConverter: measurementConverter, mscUI:mscUI
+		temperatureConverter: temperatureConverter,tcUi: tcUi,resetTempMode: resetTempMode
 		})
 		inputField.value = ""
 	}
