@@ -3,30 +3,41 @@ body {
     color: #00ff00;
     font-family: monospace;
     padding: 20px;
+    margin: 0;
+    box-sizing: border-box;
 }
+
 #console {
-    width: 50%;
-    height: 400px;
+    width: 100%;
+    max-width: 100%;
+    height: auto; 
     border: 1px solid #00ff00;
     padding: 10px;
+    overflow-x: auto; 
     overflow-y: auto;
-    scrollbar-color:  #00ff00 black;
-    margin-bottom: 10px;
-    white-space: pre-wrap;
-    margin: auto;                                                
+    white-space: pre; 
+    font-family: monospace;
+    font-size: 14px; 
+    box-sizing: border-box;  
+    margin: 0 auto;
+    scrollbar-color: #00ff00 black;
 }
+
+
 input[type="text"] {
-    width: 50%; 
+    width: 100%;
     padding: 10px;
-    margin:  auto;
+    margin-top: 1px;
     display: block;
     background-color: black;
     color: lime;
     border: 1px solid lime;
     font-family: monospace;
-    font-size: 16px;   
+    font-size: 16px;
+    box-sizing: border-box;
 }
-input[type="text"]:focus {
-    border: 1px solid lime;
-    outline: none;
+
+input[type=text]:focus {
+  border: 1px solid lime;
+  outline: none;
 }
