@@ -1,54 +1,53 @@
-export function homeMenu(){const date = new Date().toLocaleDateString();const time = new Date().toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
-return `
- /$$$$$$$$                              /$$$$$$   /$$$$$$ 
-| $$_____/                             /$$__  $$ /$$__  $$
-| $$    /$$    /$$ /$$$$$$   /$$$$$$  | $$  \\ $$| $$  \\__/
-| $$$$$|  $$  /$$//$$__  $$ /$$__  $$ | $$  | $$|  $$$$$$ 
-| $$__/ \\  $$/$$/| $$$$$$$$| $$  \\__/ | $$  | $$ \\____  $$
-| $$     \\  $$$/ | $$_____/| $$       | $$  | $$ /$$  \\ $$
-| $$$$$$$$\\  $/  |  $$$$$$$| $$       |  $$$$$$/|  $$$$$$/
-|________/ \\_/    \\_______/|__/        \\______/  \\______/
+import{handleCommand}from "./commandHandler.js"
+import{homeMenu,helpMenu}from "./mainUI.js"
+import{calculator,calcUi}from "../features/calculator.js"
+import{temperatureConverter,resetTempMode,tcUi}from "../features/temperature_converter.js"
+import{measurementConverter,mscUI}from "../features/measurement_converter.js"
 
-+--------------------------------------------------+
-|==================================================|
-|        =======[Welcome to EverOS!]=======        |
-| Today is:   ${date.padEnd(37)}|
-| Time check: ${time.padEnd(37)}|
-|==================================================|
-+--------------------------------------------------+
+const consoleDiv = document.getElementById("console")
+const inputField = document.getElementById("input")
+inputField.focus()
+let currentFeature = "home"
 
-+--------------------------------------------+
-|============================================|                                            
-| Features & (command name):                 |
-|                                            |
-| [1.Simple Calculator          (calc)]      |
-| [2.Metric system converter     (msc)]      |
-| [3.Temperature converter        (tc)]      |
-| [4.Day/Time converter          (dtc)]      |
-|                                            |
-| Type "help" for important commands         |
-| Press F5 (Or refresh icon) to restart OS   |
-|============================================|                                            
-+--------------------------------------------+`;   
+function getCurrentFeature()
+{
+	return currentFeature
 }
 
-//help menu
-export const helpMenu = `
-+---------------------------------------------------------------------------------+
-|=================================================================================|
-| Available commands:                                                             |
-| [nav [feature]: Navigate to a feature (e.g. nav calc)         ]                 |
-| [exit: (This command is deprecated)Exit current feature       ]                 |
-| [nav home: Go to home menu                                    ]                 |
-| [clear: Clear the console                                     ]                 |                                           
-|                                                                                 |                                           
-| Feature functions:                                                              |                                           
-| note: Features with * are under implementation                                  |                                            
-| [1. Simple Calculator (calc)]: Calculates simple mathematical problems          |                                            
-| [2. Metric system converter (msc)]*: Calculates any metric system measurement   |
-| [3. Temperature converter (tc)]: Converts degree to fahrenheit & vice versa     |
-| [4. Day/Time converter (dtc)]*: Calculates the measurement of time              |                                                                               
-| in its equivalents (e.g., days to hours and vice-versa)                         |
-|=================================================================================|                                                                                                                       
-+---------------------------------------------------------------------------------+ 
-`;
+function setCurrentFeature(value)
+{
+	currentFeature = value
+}
+
+function writeToConsole(text)
+{
+	const consoleDiv = document.getElementById("console")
+	consoleDiv.textContent += text + "\n"
+	consoleDiv.scrollTop = consoleDiv.scrollHeight
+}
+window.writeToConsole = writeToConsole
+inputField.addEventListener("keydown", function (event)
+{
+	if (event.key === "Enter")
+	{
+		const command = inputField.value
+		if (command.trim() !== "")
+		{
+			writeToConsole(">> " + command)
+		}
+		handleCommand(command,
+		{
+		currentFeatureGetter: getCurrentFeature,
+		currentFeatureSetter: setCurrentFeature,
+		writeToConsole: writeToConsole,
+		consoleDiv: consoleDiv,	
+		homeMenu: homeMenu(),
+		helpMenu: helpMenu,
+		calculator: calculator,calcUi: calcUi,
+		temperatureConverter: temperatureConverter,tcUi: tcUi,resetTempMode: resetTempMode,
+		measurementConverter: measurementConverter, mscUI:mscUI
+		})
+		inputField.value = ""
+	}
+})
+writeToConsole(homeMenu())
