@@ -1,13 +1,5 @@
-/*
- OS' main U.I. it includes date and time viewer/checker function 
- */
-export function homeMenu(){
-   const date = new Date().toLocaleDateString();
-    const time = new Date().toLocaleTimeString(undefined, {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-   return `
+/*OS' main U.I. it includes date and time viewer/checker function */export function homeMenu(){const date = new Date().toLocaleDateString(); const time = new Date().toLocaleTimeString(undefined, {hour: '2-digit',minute: '2-digit'});
+return `
  /$$$$$$$$                              /$$$$$$   /$$$$$$ 
 | $$_____/                             /$$__  $$ /$$__  $$
 | $$    /$$    /$$ /$$$$$$   /$$$$$$  | $$  \\ $$| $$  \\__/
