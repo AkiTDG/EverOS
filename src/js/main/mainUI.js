@@ -1,5 +1,13 @@
-export function homeMenu(){const date = new Date().toLocaleDateString();const time = new Date().toLocaleTimeString(undefined, {hour: '2-digit',minute: '2-digit'});
-return `
+/*
+ OS' main U.I. it includes date and time viewer/checker function 
+ */
+export function homeMenu(){
+   const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString(undefined, {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+   return `
  /$$$$$$$$                              /$$$$$$   /$$$$$$ 
 | $$_____/                             /$$__  $$ /$$__  $$
 | $$    /$$    /$$ /$$$$$$   /$$$$$$  | $$  \\ $$| $$  \\__/
@@ -21,9 +29,10 @@ return `
 |============================================|                                            
 | Features & (command name):                 |
 |                                            |
-| [1.Simple Calculator          (calc)]      |
+| [1.Simple calculator          (calc)]      |
 | [2.Temperature converter        (tc)]      |
-| [3.Day/Time converter          (dtc)]      |
+| [3.BMI calculator]             (bmi)]      |
+| [4.Day/Time converter          (dtc)]      |
 |                                            |
 |                                            |
 | Type "help" for important commands         |
@@ -43,10 +52,12 @@ export const helpMenu = `
 | [clear: Clear the console                                     ]                 |                                           
 |                                                                                 |                                           
 | Feature functions:                                                              |                                           
-| note: Features with * are under implementation                                  |                                            
+| note: Features with * are under implementation/planning stage                   |
+|       Features with ^ are on beta stage                                         |                                            
 | [1. Simple Calculator (calc)]: Calculates simple mathematical problems          |                                            
-| [3. Temperature converter (tc)]: Converts degree to fahrenheit & vice versa     |
-| [4. Day/Time converter (dtc)]*: Calculates the measurement of time              |
+| [2. Temperature converter (tc)]: Converts degree to fahrenheit & vice versa     |
+| [3. ^ BMI calculator (bmi)]: Measures your Body Mass Index(BMI)                 |
+| [4. * Day/Time converter (dtc)]: Calculates the measurement of time             |
 | in its equivalents (e.g., days to hours and vice-versa)                         |                                                                               
 |                                                                                 |
 |=================================================================================|                                                                                                                       
