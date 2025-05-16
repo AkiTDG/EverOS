@@ -1,1 +1,85 @@
-export function handleCommand(rawInput,context){const{currentFeatureGetter,currentFeatureSetter,writeToConsole,consoleDiv,homeMenu,helpMenu,calculator,calcUi,temperatureConverter,resetTempMode,tcUi,BMICalculator,bmiUi}=context;const command=rawInput.trim();const lowerCommand=command.toLowerCase();if(command==="")return;if(lowerCommand==="clear"){consoleDiv.textContent="";return}if(lowerCommand==="help"){writeToConsole(helpMenu);return}if(lowerCommand.startsWith("nav ")){const target=lowerCommand.substring(4);switch(target){case"home":currentFeatureSetter("home");writeToConsole(homeMenu);break;case"calc":currentFeatureSetter("calculator");writeToConsole(calcUi);break;case"tc":currentFeatureSetter("Temperature converter");resetTempMode();writeToConsole(tcUi);break;case"bmi":currentFeatureSetter("BMI calculator");writeToConsole(bmiUi);break;case"secret":currentFeatureSetter("unknown");setTimeout(function(){window.location.href="https://tinyurl.com/miku-miku-miku"},1e4);break;default:writeToConsole('Unknown feature. Type "help" for available commands.')}return}if(currentFeatureGetter()==="calculator"){calculator(command);return}if(currentFeatureGetter()==="Temperature converter"){const output=temperatureConverter(command);writeToConsole(output);return}if(currentFeatureGetter()==="BMI calculator"){BMICalculator(command,writeToConsole);return}writeToConsole('Unknown command or wrong context. Type "help" for assistance.')}
+//main handler of command logic
+export function handleCommand(rawInput, context)
+{
+	const
+	{   //functions/const extractor
+		//important parts of OS
+		currentFeatureGetter,currentFeatureSetter,
+		writeToConsole,consoleDiv,
+		homeMenu,helpMenu,
+		//features
+		calculator,calcUi,
+		temperatureConverter,resetTempMode,tcUi,
+		BMICalculator,bmiUi
+	} = context
+//command ruling
+	//input parser.ignores whitespaces when pressing enter
+	const command = rawInput.trim()
+	const lowerCommand = command.toLowerCase()
+	if (command === "") return
+	//OS commands
+	if (lowerCommand==="clear"){
+	consoleDiv.textContent = ""
+	return
+	}
+	if (lowerCommand === "help")
+	{
+	writeToConsole(helpMenu)
+	return
+	}
+	//navigation commands.mainly executes the feature's ui
+	if (lowerCommand.startsWith("nav "))
+	{
+		const target = lowerCommand.substring(4)
+		switch (target)
+		{
+		case "home":
+			currentFeatureSetter("home")
+			writeToConsole(homeMenu)
+			break
+		case "calc":
+			currentFeatureSetter("calculator")
+			writeToConsole(calcUi)
+			break
+		case "tc":
+			currentFeatureSetter("Temperature converter")
+			resetTempMode()
+			writeToConsole(tcUi)
+			break
+		case "bmi":
+			currentFeatureSetter("BMI calculator")
+			writeToConsole(bmiUi)
+			BMICalculator("", writeToConsole)
+			break
+		case "secret":
+			currentFeatureSetter("unknown")
+			setTimeout(function ()
+			{
+				window.location.href = "https://tinyurl.com/miku-miku-miku"
+			}, 1e4)
+			break
+		default:
+			writeToConsole('Unknown feature. Type "help" for available commands.')
+		}
+		return
+	}
+	//feature handler.executes feature's function
+	if (currentFeatureGetter() === "calculator")
+	{
+		calculator(command)
+		return
+	}
+	if (currentFeatureGetter() === "Temperature converter")
+	{
+		const output = temperatureConverter(command)
+		writeToConsole(output)
+		return
+	}
+	if (currentFeatureGetter() === "BMI calculator")
+	{
+		BMICalculator(command, writeToConsole)
+		return
+	}
+	//throws error when command is unknown
+	writeToConsole('Unknown command. Type "help" for assistance.')
+}
