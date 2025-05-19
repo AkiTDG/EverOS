@@ -6,11 +6,13 @@ export function handleCommand(rawInput, context)
 		//important parts of OS
 		currentFeatureGetter,currentFeatureSetter,
 		writeToConsole,consoleDiv,
-		homeMenu,helpMenu,
+		//homeMenu,
+		helpMenu,hometimeRenderer,
 		//features
-		calculator,calcUi,
-		temperatureConverter,resetTempMode,tcUi,
-		BMICalculator,bmiUi
+		calculator,calcUI,
+		temperatureConverter,resetTempMode,tcUI,
+		BMICalculator,bmiUI,
+		converterLogic,resetConvMode,dtcUI
 	} = context
 //command ruling
 	//input parser.ignores whitespaces when pressing enter
@@ -35,21 +37,26 @@ export function handleCommand(rawInput, context)
 		{
 		case "home":
 			currentFeatureSetter("home")
-			writeToConsole(homeMenu)
+			hometimeRenderer()
 			break
 		case "calc":
 			currentFeatureSetter("calculator")
-			writeToConsole(calcUi)
+			writeToConsole(calcUI)
 			break
 		case "tc":
 			currentFeatureSetter("Temperature converter")
 			resetTempMode()
-			writeToConsole(tcUi)
+			writeToConsole(tcUI)
 			break
 		case "bmi":
 			currentFeatureSetter("BMI calculator")
-			writeToConsole(bmiUi)
+			writeToConsole(bmiUI)
 			BMICalculator("", writeToConsole)
+			break
+		case "dtc":
+			currentFeatureSetter("Day time converter")
+			resetConvMode()
+			writeToConsole(dtcUI)
 			break
 		case "secret":
 			currentFeatureSetter("unknown")
@@ -79,6 +86,10 @@ export function handleCommand(rawInput, context)
 	{
 		BMICalculator(command, writeToConsole)
 		return
+	}
+	if (currentFeatureGetter() === "Day time converter") {
+  		converterLogic(command, writeToConsole)
+  		return
 	}
 	//throws error when command is unknown
 	writeToConsole('Unknown command. Type "help" for assistance.')
