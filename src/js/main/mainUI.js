@@ -1,7 +1,7 @@
 /*
  OS' main U.I. it includes date and time viewer/checker function 
  */
-export function homeMenu(currentTime = "--:--:--"){
+export function homeMenu(){
    const date = new Date().toLocaleDateString()
    /* const time = new Date().toLocaleTimeString(undefined, {
         hour: '2-digit',
@@ -18,6 +18,9 @@ export function homeMenu(currentTime = "--:--:--"){
 | $$$$$$$$\\  $/  |  $$$$$$$| $$       |  $$$$$$/|  $$$$$$/
 |________/ \\_/    \\_______/|__/       \\_______/  \\______/
 
+ /\\  _   /~\\(~  (~. _ _    | _ _|_ _  _
+/~~\\| |  \\_/_)  _)|| | ||_||(_| | (_)| 
+                                                                    
 +--------------------------------------------+
 |============================================|
 |     =======[Welcome to EverOS!]=======     |
