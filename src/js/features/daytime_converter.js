@@ -28,26 +28,26 @@ return {day,hour,minute}
 }
 
 export function converterLogic(input, writeToConsole) {
-  const trimmedInput = input.trim().toLowerCase()
+ const trimmedInput = input.trim().toLowerCase()
 
   if (trimmedInput.startsWith("convm ")) {
     const mode = trimmedInput.substring(6)
     switch (mode) {
       case "day":
         conversionMode = "day"
-        writeToConsole("Conversion mode set to DAYS. Enter number of days:")
+        writeToConsole("Conversion mode set to DAYS.Enter number of days:")
         break
       case "hr":
         conversionMode = "hour"
-        writeToConsole("Conversion mode set to HOURS. Enter number of hours:")
+        writeToConsole("Conversion mode set to HOURS.Enter number of hours:")
         break
       case "min":
         conversionMode = "minute"
-        writeToConsole("Conversion mode set to MINUTES. Enter number of minutes:")
+        writeToConsole("Conversion mode set to MINUTES.Enter number of minutes:")
         break
       case "sec":
         conversionMode = "second"
-        writeToConsole("Conversion mode set to SECONDS. Enter number of seconds:")
+        writeToConsole("Conversion mode set to SECONDS.Enter number of seconds:")
         break
       default:
         writeToConsole("[Convm Error: Unknown conversion mode.]")
@@ -57,43 +57,67 @@ export function converterLogic(input, writeToConsole) {
   }
 
   if (conversionMode === null) {
-    writeToConsole("[Convm Error: No conversion mode set. Use 'convm day/hour/minute/second']")
+    writeToConsole("Convm Error: No conversion mode set. Use 'convm day/hr/min/sec'")
     return
   }
 
   const value = parseFloat(trimmedInput)
   if (isNaN(value)) {
-    writeToConsole("[Convm Error: Invalid numeric input.]")
+    writeToConsole("Convm Error: Invalid numeric input.")
     return
   }
 
   let result
- const lineWidth = 80
+  let unitRows = []
 
-switch (conversionMode) {
-  case "day":
-    result = daysconverter(value)
-    const dayLine = `${value} day(s) = ${result.hour} hour(s), ${result.minute} minute(s), ${result.second} second(s)`
-    writeToConsole(
-      "+" + "-".repeat(lineWidth) + "+\n" +
-      "| " + dayLine.padEnd(lineWidth) + " |\n" +
-      "+" + "-".repeat(lineWidth) + "+"
-    )
-    break
+  switch (conversionMode) {
+    case "day":
+      result = daysconverter(value)
+      unitRows = [
+        { value: result.hour, label: "hours(hr)" },
+        { value: result.minute, label: "minutes(min)" },
+        { value: result.second, label: "seconds(sec)" }
+      ]
+      break
+    case "hour":
+      result = hoursconverter(value)
+      unitRows = [
+        { value: result.day, label: "days" },
+        { value: result.minute, label: "minutes(min)" },
+        { value: result.second, label: "seconds(sec)" }
+      ]
+      break
+    case "minute":
+      result = minutesconverter(value)
+      unitRows = [
+        { value: result.day, label: "days" },
+        { value: result.hour, label: "hours(hr)" },
+        { value: result.second, label: "seconds(sec)" }
+      ]
+      break
+    case "second":
+      result = secondsconverter(value)
+      unitRows = [
+        { value: result.day, label: "days" },
+        { value: result.hour, label: "hours(hr)" },
+        { value: result.minute, label: "minutes(min)" }
+      ]
+      break
+  }
 
-  // Similarly for other cases:
-  case "hour":
-    result = hoursconverter(value)
-    const hourLine = `${value} hour(s) = ${result.day} day(s), ${result.minute} minute(s), ${result.second} second(s)`
-    writeToConsole(
-      "+" + "-".repeat(lineWidth) + "+\n" +
-      "| " + hourLine.padEnd(lineWidth) + " |\n" +
-      "+" + "-".repeat(lineWidth) + "+"
-    )
-    break
-}
+  const tableLines = [
+    "+----------------------+",
+    `| ${value} ${conversionMode}(s) =`.padEnd(22) + " |",
+    "+----------------------+",
+    "| Value  | Duration    |",
+    "+----------------------+",
+    ...unitRows.map(row =>
+  `| ${String(Number(row.value.toFixed(5))).padEnd(7)}| ${row.label.padEnd(12)}|`
+     ),
+    "+----------------------+"
+  ]
 
-
+  writeToConsole(tableLines.join("\n"))
 }
 
 export const dtcUI = `
