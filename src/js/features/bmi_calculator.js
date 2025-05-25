@@ -167,12 +167,12 @@ export function BMICalculator(input, writeToConsole) {
         writeToConsole("[Enter your name]:")
         bmiState.step = 1
         bmiState = createBmiState()  
-        return  
+        //return  
       } 
       else if (input.toLowerCase() === 'n') {
        writeToConsole("[Thank you for using this feature.]\n")
        bmiState = createBmiState()
-       return
+       //return
       } 
       else {writeToConsole("[Enter y or n only.]")
       } 
@@ -193,5 +193,4 @@ export const bmiUI = `
 | [Enter height next (Supports: cm, m, ft & in)] |
 | [Then enter weight (Supports: kg & lbs)]       |
 |================================================|
-+------------------------------------------------+`
 +------------------------------------------------+`
