@@ -1,1 +1,83 @@
-const i=b;(function(c,d){const h=b,e=c();while(!![]){try{const f=parseInt(h(0xc1))/0x1*(-parseInt(h(0xd1))/0x2)+parseInt(h(0xc8))/0x3*(parseInt(h(0xd3))/0x4)+-parseInt(h(0xbe))/0x5*(-parseInt(h(0xd4))/0x6)+parseInt(h(0xc5))/0x7*(parseInt(h(0xd7))/0x8)+parseInt(h(0xc9))/0x9+-parseInt(h(0xce))/0xa+-parseInt(h(0xd5))/0xb;if(f===d)break;else e['push'](e['shift']());}catch(g){e['push'](e['shift']());}}}(a,0x21286));import{handleCommand}from'./commandHandler.js';import{homeMenu,helpMenu}from'./mainUI.js';import{calculator,calcUI}from'../features/calculator.js';import{temperatureConverter,resetTempMode,tcUI}from'../features/temperature_converter.js';import{BMICalculator,bmiUI}from'../features/bmi_calculator.js';import{converterLogic,resetConvMode,dtcUI}from'../features/daytime_converter.js';const consoleDiv=document['getElementById'](i(0xd6)),inputField=document['getElementById'](i(0xc2));inputField[i(0xbd)]();let currentFeature='Home';function getCurrentFeature(){return currentFeature;}function setCurrentFeature(c){currentFeature=c;}function b(c,d){const e=a();return b=function(f,g){f=f-0xb9;let h=e[f];return h;},b(c,d);}function writeToConsole(c){const j=i,d=document[j(0xcf)](j(0xd6));d[j(0xc7)]+=c+'\x0a',d[j(0xc3)](0x0,d[j(0xd0)]);}window['writeToConsole']=writeToConsole;function updateTime(){const k=i,c=document[k(0xcf)](k(0xcd));c&&(c['textContent']=new Date()[k(0xc0)](undefined,{'hour':k(0xd2),'minute':k(0xd2),'second':'2-digit'}));}setInterval(updateTime,0x3e8);function hometimeRenderer(){const l=i;consoleDiv[l(0xcc)]=homeMenu(),clearInterval(window[l(0xca)]),window[l(0xca)]=setInterval(updateTime,0x3e8);}inputField[i(0xbb)](i(0xbf),function(c){const m=i;if(c[m(0xc4)]==='Enter'){const d=inputField[m(0xbc)];d['trim']()!==''&&writeToConsole(m(0xba)+d),handleCommand(d,{'currentFeatureGetter':getCurrentFeature,'currentFeatureSetter':setCurrentFeature,'writeToConsole':writeToConsole,'consoleDiv':consoleDiv,'homeMenu':homeMenu,'hometimeRenderer':hometimeRenderer,'helpMenu':helpMenu,'calculator':calculator,'calcUI':calcUI,'temperatureConverter':temperatureConverter,'resetTempMode':resetTempMode,'tcUI':tcUI,'BMICalculator':BMICalculator,'bmiUI':bmiUI,'converterLogic':converterLogic,'resetConvMode':resetConvMode,'dtcUI':dtcUI}),inputField[m(0xbc)]='';}if(c[m(0xc4)]==='Delete'){setCurrentFeature(m(0xcb)),consoleDiv[m(0xc7)]='';return;}if(c['key']==='Home'){setCurrentFeature(m(0xcb)),consoleDiv[m(0xcc)]=homeMenu(),hometimeRenderer();return;}if(c[m(0xc4)]===m(0xb9)){const e=getCurrentFeature();e&&e!==m(0xcb)?(writeToConsole('\x0aExits\x20feature\x20successfully.'),setCurrentFeature(m(0xcb))):writeToConsole('\x0aYou\x20can\x27t\x20exit\x20in\x20home/cleared\x20screen.');}}),hometimeRenderer(),window[i(0xc6)]=function(){window['scrollTo'](0x0,0x0);};function a(){const n=['35oHODIW','onload','textContent','240gxeXBE','144450tbcXdR','timeUpdater','Home','innerHTML','time-display','2597460LGQVsr','getElementById','scrollHeight','36734oQolvh','2-digit','9000FiWFIO','725394UGgQxo','462066WraYJZ','console','28936pNYpXN','End','\x0a>>\x20','addEventListener','value','focus','10DORauy','keydown','toLocaleTimeString','1OKHlwF','input','scrollTo','key'];a=function(){return n;};return a();}
+//function/const import in-order for the features to work
+import{handleCommand} from "./commandHandler.js"
+import{homeMenu,helpMenu} from "./mainUI.js"
+import{calculator,calcUI} from "../features/calculator.js"
+import{temperatureConverter,resetTempMode,tcUI} from "../features/temperature_converter.js"
+import{BMICalculator,bmiUI} from "../features/bmi_calculator.js"
+import{converterLogic,resetConvMode,dtcUI} from "../features/daytime_converter.js"
+import{PingPong} from "../features/games/pong.js"
+//backbone of the console OS
+const consoleDiv = document.getElementById("console")
+const inputField = document.getElementById("input")
+inputField.focus()
+let currentFeature = "Home"
+//feature getter and setter
+function getCurrentFeature(){return currentFeature}
+function setCurrentFeature(value){currentFeature = value}
+//write to console,works similarly to console.log
+function writeToConsole(text)
+{const consoleDivWriter = document.getElementById("console")
+ consoleDivWriter.textContent += text + "\n"
+ consoleDivWriter.scrollTo(0, consoleDivWriter.scrollHeight)
+}window.writeToConsole = writeToConsole
+function updateTime() {
+const timeSpan = document.getElementById('time-display')
+if (timeSpan) {
+	timeSpan.textContent = new Date().toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+    })
+  }
+}
+function hometimeRenderer(){
+	consoleDiv.innerHTML = homeMenu()
+    clearInterval(window.timeUpdater)
+    window.timeUpdater = setInterval(updateTime,1000)
+}
+//handles functions from commandHandler.js
+inputField.addEventListener("keydown", function (event)
+{
+if (event.key === "Enter")
+   {
+	const command = inputField.value
+	if (command.trim() !== ""){writeToConsole("\n>> " + command)}
+	handleCommand(command,
+	   {currentFeatureGetter: getCurrentFeature,
+		currentFeatureSetter: setCurrentFeature,
+		writeToConsole,consoleDiv,	
+		homeMenu,hometimeRenderer,helpMenu,
+		calculator,calcUI,
+		temperatureConverter,resetTempMode,tcUI,
+		BMICalculator,bmiUI,
+		converterLogic,resetConvMode,dtcUI
+	    ,PingPong
+		//,pongUI,PingPongNavi
+	})
+	inputField.value=""
+	}
+//shortcut keys for "nav home" and "clear" commands
+if (event.key === "Delete"){
+	setCurrentFeature("Home")
+	consoleDiv.textContent = ""
+	return
+}
+if (event.key === "Home"){
+	setCurrentFeature("Home")
+	consoleDiv.innerHTML=homeMenu()
+	hometimeRenderer()
+	return
+} 
+if (event.key === "End") {
+	const currentFeature = getCurrentFeature()
+	if (currentFeature && currentFeature !== "Home") {
+		writeToConsole('\nExited feature successfully.')
+		setCurrentFeature("Home")
+	} else {
+		writeToConsole("\nYou can't exit in home/cleared screen or feature you just exited.")
+	}
+}
+})
+//displays home menu at the startup
+hometimeRenderer()
+window.onload=function(){window.scrollTo(0,0)}

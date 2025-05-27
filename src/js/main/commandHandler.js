@@ -1,1 +1,125 @@
-function b(c,d){const e=a();return b=function(f,g){f=f-0x95;let h=e[f];return h;},b(c,d);}function a(){const C=['home','toLowerCase','40OuNuvA','295346ugvwKE','3aXwldM','BMI\x20calculator','exit','387022FPEfSZ','calc','365481QKWQPP','Home','secret','clear','location','textContent','help','\x0aYou\x20can\x27t\x20exit\x20in\x20home/cleared\x20screen.','976912dWEjVq','unknown','1727520XqBgee','Unknown\x20feature.\x20Type\x20\x22help\x22\x20for\x20available\x20commands.','Day\x20time\x20converter','1809990zxXcnc','Temperature\x20converter','Calculator','trim','bmi','href','\x0aExits\x20feature\x20successfully.','723996iyFDrd'];a=function(){return C;};return a();}(function(c,d){const z=b,e=c();while(!![]){try{const f=parseInt(z(0xa6))/0x1+-parseInt(z(0xa2))/0x2*(parseInt(z(0xa3))/0x3)+-parseInt(z(0xb0))/0x4+-parseInt(z(0xb2))/0x5+parseInt(z(0x9e))/0x6+parseInt(z(0x97))/0x7+parseInt(z(0xa1))/0x8*(parseInt(z(0xa8))/0x9);if(f===d)break;else e['push'](e['shift']());}catch(g){e['push'](e['shift']());}}}(a,0x389da));export function handleCommand(c,d){const A=b,{currentFeatureGetter:e,currentFeatureSetter:f,writeToConsole:g,consoleDiv:h,helpMenu:i,hometimeRenderer:j,calculator:k,calcUI:l,temperatureConverter:m,resetTempMode:n,tcUI:o,BMICalculator:p,bmiUI:q,converterLogic:r,resetConvMode:s,dtcUI:t}=d,u=c[A(0x9a)](),v=u[A(0xa0)]();if(u==='')return;if(v===A(0xab)){f(A(0xa9)),h[A(0xad)]='';return;}if(v===A(0xae)){g(i);return;}if(v===A(0xa5)){const w=e();!w||w===A(0xa9)?g(A(0xaf)):(g(A(0x9d)),f(A(0xa9)));return;}if(v['startsWith']('nav\x20')){const x=v['substring'](0x4);switch(x){case A(0x9f):f(A(0xa9)),j();break;case A(0xa7):f('Calculator'),g(l);break;case'tc':f(A(0x98)),n(),g(o);break;case A(0x9b):f('BMI\x20calculator'),g(q),p('',g);break;case'dtc':f(A(0x96)),s(),g(t);break;case A(0xaa):f(A(0xb1)),setTimeout(function(){const B=A;window[B(0xac)][B(0x9c)]='https://tinyurl.com/miku-miku-miku';},0x2710),g(A(0x95));break;default:g('Unknown\x20feature.\x20Type\x20\x22help\x22\x20for\x20available\x20commands.');}return;}if(e()===A(0x99)){k(u);return;}if(e()===A(0x98)){const y=m(u);g(y);return;}if(e()===A(0xa4)){p(u,g);return;}if(e()===A(0x96)){r(u,g);return;}g('Unknown\x20command.\x20Type\x20\x22help\x22\x20for\x20assistance.');}
+//main handler of command logic
+export function handleCommand(rawInput, context)
+{
+	const
+	{   //functions/const extractor
+		//important parts of OS
+		currentFeatureGetter,currentFeatureSetter,
+		writeToConsole,consoleDiv,
+		//Deprecated->homeMenu,		
+		helpMenu,hometimeRenderer,
+		//features
+		calculator,calcUI,
+		temperatureConverter,resetTempMode,tcUI,
+		BMICalculator,bmiUI,
+		converterLogic,resetConvMode,dtcUI,
+		PingPong
+		//,pongUI,PingPongNavi
+	} = context
+
+	//command ruling
+	const command = rawInput.trim()
+	const lowerCommand = command.toLowerCase()
+	if (command === "") return
+
+	//OS commands
+	if (lowerCommand === "clear") {
+		currentFeatureSetter("Home")
+		consoleDiv.textContent = ""
+		return
+	}
+
+	if (lowerCommand === "help") {
+		writeToConsole(helpMenu)
+		return
+	}
+
+	if (lowerCommand === "exit") {
+		const currentFeature = currentFeatureGetter()
+		if (!currentFeature || currentFeature === "Home") {
+			writeToConsole("\nYou can't exit in home/cleared screen or feature you just exited.")
+			return
+		}
+		writeToConsole('\nExited feature successfully.')
+		currentFeatureSetter("Home")
+		return
+	}
+
+	//navigation commands.mainly executes the feature's ui
+	if (lowerCommand.startsWith("nav ")) {
+		const target = lowerCommand.substring(4)
+		switch (target) {
+			case "home":
+				currentFeatureSetter("Home")
+				hometimeRenderer()
+				break
+			case "calc":
+				currentFeatureSetter("Calculator")
+				writeToConsole(calcUI)
+				break
+			case "tc":
+				currentFeatureSetter("Temperature converter")
+				resetTempMode()
+				writeToConsole(tcUI)
+				break
+			case "bmi":
+				currentFeatureSetter("BMI calculator")
+				writeToConsole(bmiUI)
+				BMICalculator("", writeToConsole)
+				break
+			case "dtc":
+				currentFeatureSetter("Day time converter")
+				resetConvMode()
+				writeToConsole(dtcUI)
+				break
+			case "pong":
+				currentFeatureSetter("PingPong")
+				PingPong()
+				/*consoleDiv.textContent = "" 
+				writeToConsole(pongUI)*/
+				break
+			case "secret":
+				currentFeatureSetter("unknown")
+				setTimeout(function() {
+					window.location.href = "https://tinyurl.com/miku-miku-miku"
+				}, 1e4)
+				writeToConsole('Unknown feature. Type "help" for available commands.')
+				break
+			default:
+				writeToConsole('Unknown feature. Type "help" for available commands.')
+		}
+		return
+	}
+
+	//feature handler.executes feature's function
+	const currentFeature = currentFeatureGetter()
+
+	if (currentFeature === "Calculator") {
+		calculator(command)
+		return
+	}
+
+	if (currentFeature === "Temperature converter") {
+		const output = temperatureConverter(command)
+		writeToConsole(output)
+		return
+	}
+
+	if (currentFeature === "BMI calculator") {
+		BMICalculator(command, writeToConsole)
+		return
+	}
+
+	if (currentFeature === "Day time converter") {
+		converterLogic(command, writeToConsole)
+		return
+	}
+
+	/*if (currentFeature === "PingPong") {
+		PingPongNavi(command, writeToConsole)
+		return
+	}*/
+
+	//throws error when command is unknown
+	writeToConsole('Unknown command. Type "help" for assistance.')
+}
