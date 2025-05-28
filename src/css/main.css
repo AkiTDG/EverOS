@@ -1,21 +1,32 @@
 
 html,body {
+    width: 100vw;
+    height: 100vh;
     background-color: black;
     color: #00ff00;
     font-family: monospace;
-    padding: 20px;
+    padding: 0;
     margin: 0;    
+    overflow-x: auto;
+    overflow-y: auto; 
+    scrollbar-width: none;
     box-sizing: border-box;
     scrollbar-color: #00ff00 black;
+    -ms-overflow-style: none;
+    box-sizing: border-box;
 }
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {display: none;}
+
 h1{font-size: 40px;}
 
 h2{font-size: 20px;}
 
 #console {
-    width: 50%;
-    height: 500px;
-    max-width: 80vw;
+    width: 600px;
+    height: 450px;
+    /*max-width: 100%;*/
     border: 1px solid #00ff00;
     padding: 10px;
     overflow-x: auto;
@@ -35,7 +46,7 @@ h2{font-size: 20px;}
 }
 
 input[type="text"] {
-    width: 50%;
+    width: 600px;
     margin: auto;
     padding: 10px;
     margin-top: 1px; 
@@ -51,6 +62,8 @@ input[type="text"] {
 input[type=text]:focus {
   border: 1px solid  #00ff00;
   outline: none;
+  width: 600px;
+  font-size: 15px;
 }
 
 button{
