@@ -13,10 +13,9 @@ export function handleCommand(rawInput, context)
 		temperatureConverter,resetTempMode,tcUI,
 		BMICalculator,bmiUI,
 		converterLogic,resetConvMode,dtcUI,
-		PingPong
-		//,pongUI,PingPongNavi
+		PingPong,cleanupPingPong
 	} = context
-
+	cleanupPingPong();
 	//command ruling
 	const command = rawInput.trim()
 	const lowerCommand = command.toLowerCase()
@@ -52,6 +51,7 @@ export function handleCommand(rawInput, context)
 			case "home":
 				currentFeatureSetter("Home")
 				hometimeRenderer()
+				window.onload=function(){window.scrollTo(0,0)}
 				break
 			case "calc":
 				currentFeatureSetter("Calculator")
@@ -75,8 +75,6 @@ export function handleCommand(rawInput, context)
 			case "pong":
 				currentFeatureSetter("PingPong")
 				PingPong()
-				/*consoleDiv.textContent = "" 
-				writeToConsole(pongUI)*/
 				break
 			case "secret":
 				currentFeatureSetter("unknown")
@@ -114,12 +112,6 @@ export function handleCommand(rawInput, context)
 		converterLogic(command, writeToConsole)
 		return
 	}
-
-	/*if (currentFeature === "PingPong") {
-		PingPongNavi(command, writeToConsole)
-		return
-	}*/
-
 	//throws error when command is unknown
 	writeToConsole('Unknown command. Type "help" for assistance.')
 }

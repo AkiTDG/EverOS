@@ -5,7 +5,7 @@ import{calculator,calcUI} from "../features/calculator.js"
 import{temperatureConverter,resetTempMode,tcUI} from "../features/temperature_converter.js"
 import{BMICalculator,bmiUI} from "../features/bmi_calculator.js"
 import{converterLogic,resetConvMode,dtcUI} from "../features/daytime_converter.js"
-import{PingPong} from "../features/games/pong.js"
+import{PingPong,cleanupPingPong} from "../features/games/pong.js"
 //backbone of the console OS
 const consoleDiv = document.getElementById("console")
 const inputField = document.getElementById("input")
@@ -41,7 +41,7 @@ inputField.addEventListener("keydown", function (event)
 if (event.key === "Enter")
    {
 	const command = inputField.value
-	if (command.trim() !== ""){writeToConsole("\n>> " + command)}
+	if (command.trim() !== ""){writeToConsole("\nEverOS/"+getCurrentFeature()+">> "+command)}
 	handleCommand(command,
 	   {currentFeatureGetter: getCurrentFeature,
 		currentFeatureSetter: setCurrentFeature,
@@ -51,12 +51,12 @@ if (event.key === "Enter")
 		temperatureConverter,resetTempMode,tcUI,
 		BMICalculator,bmiUI,
 		converterLogic,resetConvMode,dtcUI
-	    ,PingPong
-		//,pongUI,PingPongNavi
+	    ,PingPong,cleanupPingPong
 	})
 	inputField.value=""
 	}
 //shortcut keys for "nav home" and "clear" commands
+//PC Button keys
 if (event.key === "Delete"){
 	setCurrentFeature("Home")
 	consoleDiv.textContent = ""
@@ -76,8 +76,38 @@ if (event.key === "End") {
 	} else {
 		writeToConsole("\nYou can't exit in home/cleared screen or feature you just exited.")
 	}
-}
+  }
 })
+
+//PROGRAM-SPECIFIC BUTTONS
+	document.getElementById("btn-del").addEventListener("click", () => {
+		if (getCurrentFeature() === "PingPong") cleanupPingPong()
+    	setCurrentFeature("Home")
+		consoleDiv.textContent = ""
+		return
+	})
+	document.getElementById("btn-home").addEventListener("click", () => {	
+		if (getCurrentFeature() === "PingPong") cleanupPingPong()
+   		setCurrentFeature("Home")
+    	consoleDiv.innerHTML = homeMenu()
+    	hometimeRenderer()
+	})
+	document.getElementById("btn-end").addEventListener("click", () => {
+    const currentFeature = getCurrentFeature()
+    	if (currentFeature && currentFeature !== "Home") {
+			if (currentFeature === "PingPong") cleanupPingPong()
+        	writeToConsole('\nExited feature successfully.')
+        	setCurrentFeature("Home")
+    	} 	
+		else {writeToConsole("\nYou can't exit in home/cleared screen or feature you just exited.")}
+	})
+	document.querySelectorAll(".op-btn").forEach(button => {
+    	button.addEventListener("click", () => {
+        	inputField.value += button.textContent.trim()
+        	inputField.focus()
+    	})
+	})
+
 //displays home menu at the startup
 hometimeRenderer()
 window.onload=function(){window.scrollTo(0,0)}
