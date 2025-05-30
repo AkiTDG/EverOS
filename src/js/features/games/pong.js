@@ -1,12 +1,22 @@
+let keydownHandler, keyupHandler
+let pingPongAnimationId, pingPongLoop
+
+export function cleanupPingPong() {
+  const canvas = document.getElementById("pongCanvas")
+  if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas)
+  const style = document.getElementById("pong-style")
+  if (style) style.remove()
+  const pongUI = document.getElementById('pongUI')
+  if (pongUI) pongUI.remove()
+  if (pingPongAnimationId) cancelAnimationFrame(pingPongAnimationId)
+  if (pingPongLoop) clearInterval(pingPongLoop)
+  if (keydownHandler) document.removeEventListener("keydown", keydownHandler)
+  if (keyupHandler) document.removeEventListener("keyup", keyupHandler)
+}
+
 export function PingPong() {
   const consoleDiv = document.getElementById("console")
-
-  // Clear and inject canvas HTML
-  consoleDiv.innerHTML = `
-    <canvas id="pongCanvas" width="550" height="400"></canvas>
-  `
-
-  // Inject styles for canvas and console
+  consoleDiv.innerHTML = `<canvas id="pongCanvas" width="525" height="400"></canvas>`
   const style = document.createElement("style")
   style.id = "pong-style"
   style.textContent = `
@@ -14,8 +24,8 @@ export function PingPong() {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 50%
-      height: 500px;
+      width: 569px;
+      height: 450px;
     }
     canvas {
       display: block;
@@ -23,6 +33,7 @@ export function PingPong() {
       background: #000;
       border: 2px solid lime;
       border-radius: 12px;
+      pointer-events: none;
     }
   `
   document.head.appendChild(style)
@@ -52,16 +63,29 @@ export function PingPong() {
   let downPressed = false
   let gameEnded = false
 
-  document.addEventListener("keydown", e => {
-    if (e.key === "ArrowUp") upPressed = true
-    if (e.key === "ArrowDown") downPressed = true
-    if (e.key === "End") endGame()
-  })
 
-  document.addEventListener("keyup", e => {
+  keydownHandler = function (e) {
+  if (e.key === "ArrowUp") upPressed = true
+  if (e.key === "ArrowDown") downPressed = true
+  if (e.key === "End") {
+    e.preventDefault()
+    e.stopPropagation()
+    endGame()
+  }
+  if (["Home", "Delete"].includes(e.key)) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+}
+
+  keyupHandler = function(e) {
     if (e.key === "ArrowUp") upPressed = false
     if (e.key === "ArrowDown") downPressed = false
-  })
+  }
+
+  document.addEventListener("keydown", keydownHandler)
+  document.addEventListener("keyup", keyupHandler)
+
   function drawPaddle(x, y) {
     ctx.fillStyle = "#fff"
     ctx.fillRect(x, y, paddleWidth, paddleHeight)
@@ -97,14 +121,14 @@ export function PingPong() {
       aiCanMove = !aiCanMove
       aiLastToggle = now
       aiToggleDuration = aiCanMove
-        ? 3000 + Math.random() * 3000  // Move for 3–6 seconds
-        : 800 + Math.random() * 800    // Pause for 0.8–1.6 seconds
+        ? 3000 + Math.random() * 3000  
+        : 800 + Math.random() * 800    
     }
     if (aiCanMove) {
       const target = ballY - paddleHeight / 2 + ballSize / 2
       const dy = target - aiY
       const baseSpeed = 3 + aiScore * 0.2
-      const isDashing = Math.random() < 0.4  // 40% chance to dash
+      const isDashing = Math.random() < 0.1
       const moveSpeed = isDashing ? baseSpeed * 2 : baseSpeed
         if (Math.abs(dy) > moveSpeed) {
           aiY += moveSpeed * Math.sign(dy)
@@ -182,21 +206,22 @@ export function PingPong() {
   function loop() {
     update()
     draw()
-    if (!gameEnded) requestAnimationFrame(loop)
+    if (!gameEnded) pingPongAnimationId = requestAnimationFrame(loop)
   }
 
   function endGame() {
+    if (gameEnded) return
     gameEnded = true
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.font = "28px Arial"
-    ctx.fillStyle = "#fff"
-    ctx.textAlign = "center"
-    ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 20)
-    ctx.fillText(`Final Score: Player ${playerScore} - ${aiScore} COM`, canvas.width / 2, canvas.height / 2 + 20)
-
-    const style = document.getElementById("pong-style")
-    if (style) style.remove()
+    const gameOverScreen = 
+  `+----------------------------------------------------+
+   |===[ GAME OVER ]===                                 |
+   |                                                    |
+   |Final Score: Player ${playerScore} - ${aiScore} COM |
+   |Play again?      [Type 'nav pong']                  |
+   |Return home?     [Type 'nav home']                  |
+   +----------------------------------------------------+`
+    writeToConsole(gameOverScreen)
+    cleanupPingPong()
   }
-
   loop()
 }
