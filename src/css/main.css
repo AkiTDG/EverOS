@@ -12,7 +12,7 @@ html,body {
     scrollbar-width: none;
     box-sizing: border-box;
     scrollbar-color: #00ff00 black;
-    -ms-overflow-style: none;
+ /*-ms-overflow-style: none;*/    
     box-sizing: border-box;
 }
 
@@ -26,14 +26,13 @@ h2{font-size: 20px;}
 #console {
     width: 569px;
     height: 450px;
-    /*max-width: 100%;*/
     border: 1px solid #00ff00;
     padding: 10px;
     overflow-x: auto;
     overflow-y: auto;
     white-space: pre; 
     font-family: monospace;
-    font-size: 15px; 
+    font-size: 16px; 
     box-sizing: border-box;  
     margin: auto;
     scrollbar-color: #00ff00 black;
@@ -41,7 +40,7 @@ h2{font-size: 20px;}
 
 #randMessages{
     font-size: 20px;
-    margin-top:10px;
+    margin-top:1px;
     margin-bottom: 10px;
 }
 
@@ -63,7 +62,7 @@ input[type=text]:focus {
   border: 1px solid  #00ff00;
   outline: none;
   width: 569px;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 button{
@@ -83,4 +82,52 @@ button:hover{
 
 #button-containter{
     margin-top: 10px;
+}
+
+#function-pad {
+    width: 569px;
+    margin: 1px auto;
+    text-align: center;
+}
+
+.button-row {
+    width: 100%;
+    margin-bottom: 1px;
+    font-size: 0;
+}
+
+.button-row button {
+    width: 142px; 
+    height: 45px;
+    background-color: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    font-family: monospace;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.button-row .wide-btn {
+    width: 189px;
+    height: 45px;
+    margin-right: 1px;
+    background-color: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    font-family: monospace;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.button-row .wide-btn:last-child {
+    margin-right: 0;
+}
+
+.button-row button:hover{
+    background-color: #00ff00;
+    color: black;
 }
