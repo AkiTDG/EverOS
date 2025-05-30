@@ -25,8 +25,24 @@
     <div id="consoleDiv" style="white-space: pre; font-family: monospace;"></div>
     <div id="console"></div>
     <input type="text" id="input" placeholder=">>" align="center" autocomplete="off">
+    <div id="function-pad">
+        <div class="button-row">
+            <button id="btn-del" class="wide-btn">[Del]</button>
+            <button id="btn-home" class="wide-btn">[Home]</button>
+            <button id="btn-end" class="wide-btn">[End]</button>
+        </div>
+        <div class="button-row">
+            <button class="op-btn">+</button>
+            <button class="op-btn">-</button>
+            <button class="op-btn">*</button>
+            <button class="op-btn">/</button>
+        </div>
+        <div class="button-row">
+            <button class="op-btn" style="width: 569px;">%</button>
+        </div>
+    </div>  
     <script type="module" src="src/js/main/main.js"></script>
-    <div align="center" id="button-containter">
+    <div align="center" id="button-containter" style="margin-top: 100px;">
         <h2>[Need assistance?]</h2>
         <button type="button" onclick="window.location.href='about.html'">[About EverOS]</button>
         <button type="button" onclick="window.open('https://tinyurl.com/EverOSpage','_blank')">[Contact Dev]</button>
