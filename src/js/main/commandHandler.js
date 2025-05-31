@@ -11,7 +11,7 @@ export function handleCommand(rawInput, context)
 		//features
 		calculator,calcUI,
 		temperatureConverter,resetTempMode,tcUI,
-		BMICalculator,bmiUI,
+		BMICalculator,initBMI,bmiUI,
 		converterLogic,resetConvMode,dtcUI,
 		PingPong,cleanupPingPong
 	} = context
@@ -39,6 +39,11 @@ export function handleCommand(rawInput, context)
 			writeToConsole("\nYou can't exit in home/cleared screen or feature you just exited.")
 			return
 		}
+		if (currentFeature === "BMI calculator") {
+		import("../features/bmi_calculator.js").then(module => {
+			module.BMIflow = true
+		})
+	}
 		writeToConsole('\nExited feature successfully.')
 		currentFeatureSetter("Home")
 		return
@@ -65,7 +70,7 @@ export function handleCommand(rawInput, context)
 			case "bmi":
 				currentFeatureSetter("BMI calculator")
 				writeToConsole(bmiUI)
-				BMICalculator("", writeToConsole)
+				initBMI(writeToConsole) 
 				break
 			case "dtc":
 				currentFeatureSetter("Day time converter")

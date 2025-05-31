@@ -3,7 +3,7 @@ import{handleCommand} from "./commandHandler.js"
 import{homeMenu,helpMenu} from "./mainUI.js"
 import{calculator,calcUI} from "../features/calculator.js"
 import{temperatureConverter,resetTempMode,tcUI} from "../features/temperature_converter.js"
-import{BMICalculator,bmiUI} from "../features/bmi_calculator.js"
+import{BMICalculator,bmiUI,initBMI} from "../features/bmi_calculator.js"
 import{converterLogic,resetConvMode,dtcUI} from "../features/daytime_converter.js"
 import{PingPong,cleanupPingPong} from "../features/games/pong.js"
 //backbone of the console OS
@@ -15,11 +15,13 @@ let currentFeature = "Home"
 function getCurrentFeature(){return currentFeature}
 function setCurrentFeature(value){currentFeature = value}
 //write to console,works similarly to console.log
-function writeToConsole(text)
-{const consoleDivWriter = document.getElementById("console")
- consoleDivWriter.textContent += text + "\n"
- consoleDivWriter.scrollTo(0, consoleDivWriter.scrollHeight)
-}window.writeToConsole = writeToConsole
+function writeToConsole(text){
+	const consoleDivWriter = document.getElementById("console")
+ 	consoleDivWriter.textContent += text + "\n"
+ 	consoleDivWriter.scrollTo(0, consoleDivWriter.scrollHeight)
+}
+window.writeToConsole = writeToConsole
+//Gets time to be displayed on the Home Menu.
 function updateTime() {
 const timeSpan = document.getElementById('time-display')
 if (timeSpan) {
@@ -30,6 +32,7 @@ if (timeSpan) {
     })
   }
 }
+//Renders home menu,together with updated time
 function hometimeRenderer(){
 	consoleDiv.innerHTML = homeMenu()
     clearInterval(window.timeUpdater)
@@ -49,7 +52,7 @@ if (event.key === "Enter")
 		homeMenu,hometimeRenderer,helpMenu,
 		calculator,calcUI,
 		temperatureConverter,resetTempMode,tcUI,
-		BMICalculator,bmiUI,
+		BMICalculator,initBMI,bmiUI,
 		converterLogic,resetConvMode,dtcUI
 	    ,PingPong,cleanupPingPong
 	})
