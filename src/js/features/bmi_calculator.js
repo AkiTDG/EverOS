@@ -1,39 +1,29 @@
-function bmiValues(){
+//processes the steps and values
+function bmiValues() {
   return {
-  isActive: false,
-  step :0,
-  name: "",
-  heightInput: "",
-  weightInput: "",
-  height: 0,
-  weight: 0,
+    step: 0,
+    name: "",
+    heightInput: "",
+    weightInput: "",
+    height: 0,
+    weight: 0,
+    result: "",
   }
 }
-let bmiState = bmiValues()
-//for height conversion
+//initial default state
+let bmiState = null
+//conversion constants
 const m2cm = 0.01
 const m2in = 0.0254
 const m2ft = 0.3048
-//for weight conversion
 const lb2kg = 0.453592
-//heightparser/converter
+//conversion parsers(height)
 function parseHeight(value) {
   const input = value.trim().toLowerCase()
-  if (input.endsWith("cm")) {
-    const cm = parseFloat(input)
-    return cm * m2cm
-  }
-  if (input.endsWith("m")) {
-     return parseFloat(input.replace("m", "").trim());
-  }
-  if (input.endsWith("in")) {
-    const inches = parseFloat(input)
-    return inches * m2in
-  }
-  if (input.endsWith("ft") && !input.includes("in")) {
-    const ft = parseFloat(input)
-    return ft * m2ft
-  }
+  if (input.endsWith("cm")) return parseFloat(input) * m2cm
+  if (input.endsWith("m")) return parseFloat(input.replace("m", "").trim())
+  if (input.endsWith("in")) return parseFloat(input) * m2in
+  if (input.endsWith("ft") && !input.includes("in")) return parseFloat(input) * m2ft
   const ftInRegex = /(\d+)\s*(?:ft|')\s*(\d+)?\s*(?:in|")?/
   const match = input.match(ftInRegex)
   if (match) {
@@ -42,101 +32,99 @@ function parseHeight(value) {
     return (ft * 12 + inches) * m2in
   }
   const val = parseFloat(input)
-  if (!isNaN(val)) return val
-  return NaN
+  return isNaN(val) ? NaN : val
 }
-//weight parser/converter
+//conversion parsers(weight)
 function parseWeight(value) {
   const input = value.trim().toLowerCase()
   if (input.endsWith("kg")) return parseFloat(input.replace("kg", "").trim())
-  if (input.endsWith("lbs") || input.endsWith("lb"))  
-    return parseFloat(input.replace(/lbs?|lb/, "").trim()) * lb2kg
+  if (input.endsWith("lbs") || input.endsWith("lb")) return parseFloat(input.replace(/lbs?|lb/, "").trim()) * lb2kg
   const val = parseFloat(input)
-  if (!isNaN(val)) return val
-  return NaN
+  return isNaN(val) ? NaN : val
 }
-//self-explanatory
+//BMI formula
 function BMIformula(weight, height) {
   return weight / (height * height)
 }
-//self-explanatory
+//BMI classification
 function BMIClassifier(bmi) {
   if (bmi < 18.5) return "[Underweight]"
-  if (bmi >= 18.5 && bmi < 24.9) return "[Normal weight]"
-  if (bmi >= 25 && bmi < 29.9) return "[Overweight]"
-  if (bmi >= 30) return "[Obese]"
-  return "[Unknown]"
+  if (bmi < 24.9) return "[Normal weight]"
+  if (bmi < 29.9) return "[Overweight]"
+  return "[Obese]"
 }
-//fetches current date to put in the receipt
+//gets present date
 function getCurrentDate() {
-const now = new Date()
-return now.toLocaleDateString
-('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) +
-' ' + now.toLocaleTimeString('en-US')
+  const now = new Date()
+  return now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) +
+    ' ' + now.toLocaleTimeString('en-US')
 }
-//receipt (saved as txt file)
-function receipt (name,height,weight,BMI){
-const date = getCurrentDate()
-const receiptContent = `
+//receipt used to record BMI
+function receipt(name, height, weight, BMI) {
+  const date = getCurrentDate()
+  const receiptContent = `
 +---------------------------------------+
 |=======================================|
-|${'     [Your official BMI Receipt]'.padEnd(39)}|
+|     [Your official BMI Receipt]       |
 |=======================================|
-+---------------------------------------+
-
 +---------------------------------------+
 |=======================================|
 |Name: ${name.toUpperCase().padEnd(33)}|
-|=======================================|
 |Height: ${height.toUpperCase().padEnd(31)}|
 |Weight: ${weight.toUpperCase().padEnd(31)}|
 |BMI Status: ${BMI.toUpperCase().padEnd(27)}|
 |Date Taken: ${date.toUpperCase().padEnd(27)}|
 |=======================================|
-|${'[This receipt is made on EverOS]'.padEnd(39)}|
-|${'[Do not edit]'.padEnd(39)}|
+|[This receipt is made on EverOS]       |
+|[Do not edit]                          |
 |=======================================|
 +---------------------------------------+`
-const blob = new Blob([receiptContent], { type: 'text/plain' })
-const url = URL.createObjectURL(blob)
-const a = document.createElement('a')
-const filename = `BMI_${name.replace(/\s+/g, "_")}_${date.replace(/[:\s]/g, "-")}.txt`
-a.href = url
-a.download = filename
-document.body.appendChild(a)
-a.click()
-setTimeout(() => {
-document.body.removeChild(a)
-URL.revokeObjectURL(url)
-}, 0)
+  const blob = new Blob([receiptContent], {type: 'text/plain'})
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  const filename = `BMI_${name.replace(/\s+/g, "_")}_${date.replace(/[:\s]/g, "-")}.txt`
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  setTimeout(() => {
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }, 0)
 }
+//Initializer.Everytime you navigate to BMI, this will be the first step
+export function initBMI(writeToConsole) {
+  bmiState = bmiValues()
+  writeToConsole("[Enter your name]:")
+}
+//Whole BMI calculator workflow logic
 export function BMICalculator(input, writeToConsole) {
+  if (!bmiState) {
+    writeToConsole("[Error: BMI feature not initialized properly. Type 'nav bmi' again.]")
+    return
+  }
+
   switch (bmiState.step) {
     case 0:
-      bmiState.isActive = true
-      writeToConsole("[Enter your name]:")
+      bmiState.name = input
       bmiState.step = 1
+      writeToConsole("[Enter your height]:")
       break
     case 1:
-      bmiState.name = input
-      writeToConsole("[Enter your height]:")
-      bmiState.step = 2
-      break
-    case 2:
       bmiState.heightInput = input
       bmiState.height = parseHeight(input)
       if (isNaN(bmiState.height) || bmiState.height <= 0) {
-        writeToConsole("[Error: Invalid height format. Try again:]")
+        writeToConsole("[Error: Invalid height format.]")
         return
       }
+      bmiState.step = 2
       writeToConsole("[Enter your weight]:")
-      bmiState.step = 3
       break
-    case 3:
+    case 2:
       bmiState.weightInput = input
       bmiState.weight = parseWeight(input)
       if (isNaN(bmiState.weight) || bmiState.weight <= 0) {
-        writeToConsole("[Error: Invalid weight format. Try again:]")
+        writeToConsole("[Error: Invalid weight format.]")
         return
       }
       const bmi = BMIformula(bmiState.weight, bmiState.height)
@@ -144,45 +132,40 @@ export function BMICalculator(input, writeToConsole) {
       const result = `[${bmiState.name}, your BMI is ${bmi.toFixed(2)}-${status}]`
       writeToConsole(result)
       bmiState.result = `${bmi.toFixed(2)}-${status}`
+      bmiState.step = 3
       writeToConsole("[Would you like to save this as a record? (y/n)]:")
+      break
+    case 3:
+      if (input.toLowerCase() === "y") {
+        receipt(bmiState.name, bmiState.heightInput, bmiState.weightInput, bmiState.result)
+        writeToConsole("[Thank you for using this feature. Your receipt is now downloaded.]\n")
+      } else if (input.toLowerCase() === "n") {
+        writeToConsole("[Thank you for using this feature.]\n")
+      } else {
+        writeToConsole("[Enter y or n only.]")
+        return
+      }
+      writeToConsole("[Would you like to enter a new field? (y/n)]:")
       bmiState.step = 4
       break
     case 4:
-      if (input.toLowerCase() === 'y') {
-        receipt(bmiState.name, bmiState.heightInput, bmiState.weightInput, bmiState.result)
-        writeToConsole("[Thank you for using this feature. Your receipt is now downloaded.]\n")
-      }
-      else if (input.toLowerCase() === 'n') {
-        writeToConsole("[Thank you for using this feature.]\n")
-      }
-      else {
-        writeToConsole("[Enter y or n only.]")
-      return
-      }
-      writeToConsole("[Would you like to enter a new field? (y/n)]:")
-      bmiState.step = 5
-      break
-    case 5:
-      if (input.toLowerCase() === 'y') {
+      if (input.toLowerCase() === "y") {
+        bmiState = bmiValues()
         writeToConsole("[Enter your name]:")
-        bmiState.step = 1
-        bmiState = createBmiState()  
-        //return  
-      } 
-      else if (input.toLowerCase() === 'n') {
-       writeToConsole("[Thank you for using this feature.]\n")
-       bmiState = createBmiState()
-       //return
-      } 
-      else {writeToConsole("[Enter y or n only.]")
-      } 
+      } else if (input.toLowerCase() === "n") {
+        bmiState = null
+        writeToConsole("[Thank you for using BMI calculator. Type 'nav bmi' to start again.]\n")
+      } else {
+        writeToConsole("[Enter y or n only.]")
+      }
       break
     default:
-       writeToConsole("[Unexpected state. Resetting...]")
-       bmiState = createBmiState()
+      writeToConsole("[Unexpected state. Resetting feature...]")
+      bmiState = null
+      break
   }
 }
-
+//User Interface for the feature
 export const bmiUI = `
 +------------------------------------------------+
 |================================================|
