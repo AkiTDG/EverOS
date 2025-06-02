@@ -12,7 +12,6 @@ html,body {
     scrollbar-width: none;
     box-sizing: border-box;
     scrollbar-color: #00ff00 black;
- /*-ms-overflow-style: none;*/    
     box-sizing: border-box;
 }
 
@@ -69,65 +68,106 @@ button{
   border: 1px solid  #00ff00;
   background-color: black;
   color: #00ff00;
-  font-size: 15px; 
+  font-size: 18px; 
   font-family: monospace;
+  border-radius: 15px;
 }
 button:hover{
   border: 1px solid  black;
   background-color: #00ff00;
   color: black;
-  font-size: 15px; 
+  font-size: 18px; 
   font-family: monospace;  
 }
 
-#button-containter{
-    margin-top: 10px;
+#button-container {
+    width: 569px;
+    margin: 1px auto;
+    border: 1px solid #00ff00;
+    box-sizing: border-box;
 }
 
 #function-pad {
     width: 569px;
-    margin: 1px auto;
-    text-align: center;
+    margin: 5px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .button-row {
-    width: 100%;
-    margin-bottom: 1px;
-    font-size: 0;
+    display: flex;
+    gap: 3px;
 }
 
-.button-row button {
-    width: 142px; 
+.wide-btn,.op-btn {
+    width: 186.33px;
     height: 45px;
     background-color: black;
     color: #00ff00;
     border: 1px solid #00ff00;
     font-family: monospace;
     font-size: 20px;
-    display: inline-block;
-    vertical-align: top;
     box-sizing: border-box;
+    margin-right: 3px;
 }
 
-.button-row .wide-btn {
-    width: 189px;
-    height: 45px;
-    margin-right: 1px;
-    background-color: black;
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    font-family: monospace;
-    font-size: 20px;
-    display: inline-block;
-    vertical-align: top;
-    box-sizing: border-box;
-}
-
-.button-row .wide-btn:last-child {
-    margin-right: 0;
-}
-
-.button-row button:hover{
+.wide-btn:hover,.op-btn:hover {
     background-color: #00ff00;
     color: black;
+}
+
+#controls-layout {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 20px;
+}
+
+.button-direction {
+    width: 150px;
+    height: 150px;
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    gap: 5px;
+}
+
+.button-direction button {
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+    font-family: monospace;
+    border: 1px solid #00ff00;
+    background-color: black;
+    color: #00ff00;
+    cursor: pointer;
+}
+
+.button-direction button:hover {
+    background-color: #00ff00;
+    color: black;
+}
+
+#btn-up { grid-area: up; }
+#btn-down { grid-area: down; }
+#btn-left { grid-area: left; }
+#btn-right { grid-area: right; }
+
+.operand-pad {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-right: 20px
+}
+
+.operand-row {
+    display: flex;
+    gap: 2px;
+}
+
+.op-btn.full {
+    width: 100%;
 }
