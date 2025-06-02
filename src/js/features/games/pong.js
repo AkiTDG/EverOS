@@ -83,8 +83,22 @@ export function PingPong() {
     if (e.key === "ArrowDown") downPressed = false
   }
 
+  const btnUp = document.getElementById("btn-up")
+  const btnDown = document.getElementById("btn-down")
+
   document.addEventListener("keydown", keydownHandler)
   document.addEventListener("keyup", keyupHandler)
+
+  if (btnUp && btnDown) {
+    btnUp.addEventListener("mousedown", () => upPressed = true)
+    btnUp.addEventListener("mouseup", () => upPressed = false)
+    btnUp.addEventListener("touchstart", e => { e.preventDefault(); upPressed = true })
+    btnUp.addEventListener("touchend", e => { e.preventDefault(); upPressed = false })
+    btnDown.addEventListener("mousedown", () => downPressed = true)
+    btnDown.addEventListener("mouseup", () => downPressed = false)
+    btnDown.addEventListener("touchstart", e => { e.preventDefault(); downPressed = true })
+    btnDown.addEventListener("touchend", e => { e.preventDefault(); downPressed = false })
+  }
 
   function drawPaddle(x, y) {
     ctx.fillStyle = "#fff"
@@ -212,14 +226,14 @@ export function PingPong() {
   function endGame() {
     if (gameEnded) return
     gameEnded = true
-    const gameOverScreen = 
-  `+----------------------------------------------------+
-   |===[ GAME OVER ]===                                 |
-   |                                                    |
-   |Final Score: Player ${playerScore} - ${aiScore} COM |
-   |Play again?      [Type 'nav pong']                  |
-   |Return home?     [Type 'nav home']                  |
-   +----------------------------------------------------+`
+    const gameOverScreen = `
++----------------------------------------------------+
+|===[ GAME OVER ]===                                 |
+|                                                    |
+|Final Score: Player ${playerScore} - ${aiScore} COM                       |
+|Play again?      [Type 'nav pong']                  |
+|Return home?     [Type 'nav home']                  |
++----------------------------------------------------+`
     writeToConsole(gameOverScreen)
     cleanupPingPong()
   }
