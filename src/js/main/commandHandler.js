@@ -58,7 +58,6 @@ export function handleCommand(rawInput, context)
 			case "home":
 				currentFeatureSetter("Home")
 				hometimeRenderer()
-				stopAnimation()
 				break
 			case "calc":
 				currentFeatureSetter("Calculator")
