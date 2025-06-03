@@ -1,9 +1,8 @@
-
+//initial mode
 let conversionMode = null
-
-export function resetTempMode() {
-    conversionMode = null
-}
+//reset conversion mode
+export function resetTempMode() {conversionMode = null}
+//program logic
 export function temperatureConverter(input) {
     const trimmedInput = input.trim().toLowerCase()
 
@@ -31,7 +30,7 @@ export function temperatureConverter(input) {
         return `[${temp}°F (degree Fahrenheit) = ${result}°C in degree Celsius.]`
     }
 }
-
+//feature ui
 export const tcUI = `
 .---------------------------------------------------------------.
 |  ______                                     __                |
