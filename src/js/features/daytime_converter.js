@@ -1,32 +1,36 @@
+//initial cnversion mode
 let conversionMode = null
-export function resetConvMode() {
-conversionMode = null
-}
+//resets conversion mode
+export function resetConvMode() {conversionMode = null}
+//day conversion formula
 function daysconverter(day){
 const hour=day*24
 const minute=hour*60
 const second=minute*60
 return {hour,minute,second}
 }
+//hour conversion formula
 function hoursconverter(hour){
 const day=hour/24
 const minute=hour*60
 const second=minute*60
 return {day,minute,second}
 }
+//minute conversion formula
 function minutesconverter(minute){
 const day=minute/1440
 const hour=minute/60
 const second=minute*60
 return {day,hour,second}
 }
+//seconds conversion formula
 function secondsconverter(second){
 const day=second/86400 
 const hour=second/3600
 const minute=second/60
 return {day,hour,minute}
 }
-
+//converter logic
 export function converterLogic(input, writeToConsole) {
  const trimmedInput = input.trim().toLowerCase()
 
@@ -119,7 +123,7 @@ export function converterLogic(input, writeToConsole) {
 
   writeToConsole(tableLines.join("\n"))
 }
-
+//Feature ui
 export const dtcUI = `
  ____                    _____ _           
 |    \\ ___ _ _    ___   |_   _|_|_____ ___
