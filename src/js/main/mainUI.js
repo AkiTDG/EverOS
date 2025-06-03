@@ -71,6 +71,8 @@ export const helpMenu = `
 |                                                                         |
 | C. Games:                                                               |
 | [^1. Ping Pong (pong)]: A simple pong game vs AI (1st to score 20 wins) |
+|      Controls: arrow up & arrow down (PC)                               |
+|                hover (Mobile)                                           |
 |=========================================================================|
 +-------------------------------------------------------------------------+
 `
