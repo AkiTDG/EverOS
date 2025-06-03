@@ -50,12 +50,24 @@ export function PingPong() {
       background: #000;
       border: 2px solid lime;
       border-radius: 12px;
-      pointer-events: none;
+      touch-action: none;
     }
   `
   document.head.appendChild(style)
 
   const canvas = document.getElementById("pongCanvas")
+  canvas.addEventListener("touchmove", e => {
+  e.preventDefault()
+  const touch = e.touches[0]
+  const rect = canvas.getBoundingClientRect()
+  const y = touch.clientY - rect.top
+  playerY = y - paddleHeight / 2
+
+  // Clamp within canvas
+  if (playerY < 0) playerY = 0
+  if (playerY + paddleHeight > canvas.height) playerY = canvas.height - paddleHeight
+}, { passive: false })
+
   const ctx = canvas.getContext("2d")
 
   const paddleHeight = 80
@@ -96,23 +108,6 @@ export function PingPong() {
   keyupHandler = function(e) {
     if (e.key === "ArrowUp") upPressed = false
     if (e.key === "ArrowDown") downPressed = false
-  }
-
-  const btnUp = document.getElementById("btn-up")
-  const btnDown = document.getElementById("btn-down")
-
-  document.addEventListener("keydown", keydownHandler)
-  document.addEventListener("keyup", keyupHandler)
-
-  if (btnUp && btnDown) {
-    btnUp.addEventListener("mousedown", () => upPressed = true)
-    btnUp.addEventListener("mouseup", () => upPressed = false)
-    btnUp.addEventListener("touchstart", e => { e.preventDefault(); upPressed = true })
-    btnUp.addEventListener("touchend", e => { e.preventDefault(); upPressed = false })
-    btnDown.addEventListener("mousedown", () => downPressed = true)
-    btnDown.addEventListener("mouseup", () => downPressed = false)
-    btnDown.addEventListener("touchstart", e => { e.preventDefault(); downPressed = true })
-    btnDown.addEventListener("touchend", e => { e.preventDefault(); downPressed = false })
   }
 
   function drawPaddle(x, y) {
