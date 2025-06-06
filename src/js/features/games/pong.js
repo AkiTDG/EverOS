@@ -4,6 +4,11 @@ let pingPongAnimationId, pingPongLoop
 export let playerScore = 0
 export let aiScore = 0
 export let gameEnded = false
+let aiCanMove = true
+let aiLastToggle = performance.now()
+let aiToggleDuration = 3000 + Math.random() * 3000
+let aiDirection = 1
+
 //used to patch pingpong's buggy home screen after play
 export function cleanupPingPong() {
   const canvas = document.getElementById("pongCanvas")
@@ -16,15 +21,20 @@ export function cleanupPingPong() {
   if (pingPongLoop) clearInterval(pingPongLoop)
   if (keydownHandler) document.removeEventListener("keydown", keydownHandler)
   if (keyupHandler) document.removeEventListener("keyup", keyupHandler)
+  
+  playerScore=0
+  aiScore=0
 }
 //game over card,plus screen patch
 export function endGame() {
-    if (gameEnded) return gameEnded = true
+    if (gameEnded) return 
+    gameEnded=true
+    const score = `Final Score: Player ${playerScore} - ${aiScore} COM`.padEnd(51)
     const gameOverScreen = `
 +----------------------------------------------------+
 |===[ GAME OVER ]===                                 |
 |                                                    |
-|Final Score: Player ${playerScore} - ${aiScore} COM                       |
+|${score}|
 |Play again?      [Type 'nav pong']                  |
 |Return home?     [Type 'nav home']                  |
 +----------------------------------------------------+`
@@ -33,6 +43,9 @@ export function endGame() {
   }
 //game's whole logic
 export function PingPong() {
+  playerScore = 0
+  aiScore = 0
+  gameEnded = false
 //in-game screen
   const consoleDiv = document.getElementById("console")
   consoleDiv.innerHTML = `<canvas id="pongCanvas" width="525" height="400"></canvas>`
@@ -75,19 +88,21 @@ export function PingPong() {
   const paddleOffset = 15
   const ballSize = 20
   const maxScore = 20
-//in-game sprites
+//in-game sprites/logic
   let playerY = canvas.height / 2 - paddleHeight / 2
   let aiY = canvas.height / 2 - paddleHeight / 2
   let ballX = canvas.width / 2
   let ballY = canvas.height / 2
   let ballSpeedX = 3
-  let ballSpeedY = 2
+  let ballSpeedY = 3
   let ballmvntInterval = 0  
-  let aiCanMove = true
-  let aiLastToggle = performance.now()
-  let aiToggleDuration = 5000
   let upPressed = false
   let downPressed = false
+  let aiTrackBallNextPlay = false
+  let aiZoomNextPlay = false
+  let aiStartedAt = performance.now()
+  let aiGracePeriod = 3000
+
 //key control logic
   keydownHandler = function (e) {
   if (e.key === "ArrowUp") upPressed = true
@@ -102,6 +117,7 @@ export function PingPong() {
     e.stopPropagation()
   }
 }
+
   keyupHandler = function(e) {
     if (e.key === "ArrowUp") upPressed = false
     if (e.key === "ArrowDown") downPressed = false
@@ -136,27 +152,40 @@ export function PingPong() {
   }
 //AI opponent's movement logic
   function moveAI() {
-    const now = performance.now()
+  const now = performance.now();
+  if (now - aiStartedAt >= aiGracePeriod) {
     if (now - aiLastToggle >= aiToggleDuration) {
-      aiCanMove = !aiCanMove
-      aiLastToggle = now
+      aiCanMove = !aiCanMove;
+      aiLastToggle = now;
       aiToggleDuration = aiCanMove
-        ? 3000 + Math.random() * 3000  
-        : 800 + Math.random() * 800    
+        ? 3000 + Math.random() * 3000
+        : 800 + Math.random() * 800
     }
-    if (aiCanMove) {
-      const target = ballY - paddleHeight / 2 + ballSize / 2
-      const dy = target - aiY
-      const baseSpeed = 3 + aiScore * 0.2
-      const isDashing = Math.random() < 0.1
-      const moveSpeed = isDashing ? baseSpeed * 2 : baseSpeed
-        if (Math.abs(dy) > moveSpeed) {
-          aiY += moveSpeed * Math.sign(dy)
-        }    
-        else {
-          aiY += dy
-        }
+  } 
+  else {aiCanMove = true}
+
+  if (aiCanMove) {
+    if (aiTrackBallNextPlay) {
+      const paddleCenter = aiY + paddleHeight / 2
+      const ballCenter = ballY + ballSize / 2
+      const trackingSpeed = aiZoomNextPlay ? 6 : 4
+      if (ballCenter > paddleCenter) {aiY += trackingSpeed} 
+      else if (ballCenter < paddleCenter) {aiY -= trackingSpeed}
+    } 
+    else {
+      const baseSpeed = 2;
+      const moveSpeed = aiZoomNextPlay ? baseSpeed * 2 : baseSpeed;
+      aiY += moveSpeed * aiDirection;
     }
+    if (aiY <= 0) {
+      aiY = 0;
+      aiDirection = 1;
+    } 
+    else if (aiY + paddleHeight >= canvas.height) {
+      aiY = canvas.height - paddleHeight;
+      aiDirection = -1;
+    }
+  }
 }
 //ball's direction after neither player scores
   function resetBall(direction = 1) {
@@ -164,6 +193,8 @@ export function PingPong() {
     ballY = canvas.height / 2 - ballSize / 2
     ballSpeedX = direction * 3
     ballSpeedY = 2 * (Math.random() > 0.5 ? 1 : -1)
+    aiTrackBallNextPlay = Math.random() < 0.30
+    aiZoomNextPlay = Math.random() < 0.40
   }
 //collision logic with the paddle
   function checkCollision() {
@@ -201,13 +232,13 @@ export function PingPong() {
 
     if (ballX < 0) {
       aiScore++
-      if (aiScore >= maxScore) return endGame()
+      if (aiScore >= maxScore && !gameEnded) return endGame()
       resetBall(1)
     }
 
     if (ballX + ballSize > canvas.width) {
       playerScore++
-      if (playerScore >= maxScore) return endGame()
+      if (playerScore >= maxScore && !gameEnded) return endGame()
       resetBall(-1)
     }
 
