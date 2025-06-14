@@ -1,6 +1,4 @@
 import { supabase } from './supabaseCalc.js'
-
-// ✅ Keeps your ASCII UI
 export const calcUI = `╔═══════════════════════════════════════════╗
 ║ ░█▀▀░█▀█░█░░░█▀▀░█░█░█░░░█▀█░▀█▀░█▀█░█▀▄  ║
 ║ ░█░░░█▀█░█░░░█░░░█░█░█░░░█▀█░░█░░█░█░█▀▄  ║
@@ -29,14 +27,11 @@ export const calcUI = `╔══════════════════
 export async function calculator(expression) {
   try {
     const cleanExpression = expression.trim()
-
-    // ✅ FIXED: Correct history command parsing
     if (cleanExpression.startsWith('calc hist')) {
       const args = cleanExpression.split(' ')
-      const subCommand = args[2] // ✅ CORRECTED
+      const subCommand = args[2] 
 
       if (subCommand === '*') {
-        // Show all history
         const { data, error } = await supabase.from('calc_history').select('*')
         if (error) throw error
 
@@ -49,7 +44,6 @@ export async function calculator(expression) {
         }
         return
       } else if (subCommand === 'del' && args[3]) {
-        // Delete specific operation
         const op = args.slice(3).join(' ')
         const { error } = await supabase.from('calc_history').delete().eq('expression', op)
         if (error) throw error
