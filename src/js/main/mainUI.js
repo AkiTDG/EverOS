@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /*
  OS' main U.I. it includes date and time viewer/checker function 
  */
@@ -172,5 +172,4 @@ export const helpMenu =
 |   1. +-*/% (animation test) - render ASCII animation     |
 |==========================================================|
 +----------------------------------------------------------+
->>>>>>> a9c77a03f4d37210db88dbe058f2ac3395318559
 `
