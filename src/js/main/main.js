@@ -127,7 +127,6 @@ if (event.key === "End") {
 //displays home menu at the startup
 hometimeRenderer()
 window.onload=function(){window.scrollTo(0,0)}
-=======
 //function/const import in-order for the features to work
 import{handleCommand} from "./commandHandler.js"
 import{homeMenu,helpMenu,mainMenu} from "./mainUI.js"
