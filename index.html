@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=600, user-scalable=no">
+
+    <title>EverOS: Operating System Simulator</title>
+    <link rel="icon" type="image/x-icon" href="img_assets/logo.ico">
+    <link rel="stylesheet" href="src/css/main.css">
+    <style>html 
+        {cursor: url('img_assets/cursortilt.png'), auto;
+         p,console,input,textarea 
+         {cursor: url('img_assets/cursortext.png'), text;}
+         button:hover {
+         cursor: url('img_assets/cursorlink.png'), pointer;
+         }
+        }</style>                
+</head>
+<body>
+    <h1 align="center">[EverOS CLI v2.3.p.b (Avant-Garde)]</h1>
+    <div id="randMessages" align="center">
+        <script src="src/js/features/splashtext.js"></script>
+    </div>
+    <div id="consoleDiv" style="white-space: pre; font-family: monospace;"></div>
+    <div id="console"></div>
+    <input type="text" id="input" placeholder=">>" align="center" autocomplete="off">
+    <div id="button-container">
+    <div id="function-pad">
+        <div class="button-row">
+            <button id="btn-del" class="wide-btn">[Del]</button>
+            <button id="btn-home" class="wide-btn">[Home]</button>
+            <button id="btn-end" class="wide-btn">[End]</button>
+        </div>
+        <div class="operand-pad">
+            <div class="operand-row">
+                <button class="op-btn">+</button>
+                <button class="op-btn">-</button>
+                <button class="op-btn">*</button>
+                <button class="op-btn">/</button>
+            </div>
+            <div class="operand-row">
+                <button class="op-btn full">%</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+    <script type="module" src="src/js/main/main.js"></script>
+    <script type="module" src="src/js/features/experimental/testASCIIAnimation.js"></script>
+    <div align="center" id="button-containter" style="margin-top: 100px;">
+        <h2>[Need assistance?]</h2>
+        <button type="button" onclick="window.location.href='about.html'">About EverOS</button>
+        <button type="button" onclick="window.open('https://tinyurl.com/EverOSpage','_blank')">Contact Dev</button>
+        <button type="button" onclick="window.open('https://github.com/AkiTDG/EverOS','_blank')">Github repo</button>
+    </div>
+    
+</body>
+</html>         
+       

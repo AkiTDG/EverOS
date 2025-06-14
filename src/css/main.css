@@ -1,0 +1,121 @@
+
+html,body {
+    background-color: black;
+    color: #00ff00;
+    font-family: monospace;
+    padding: 0;
+    margin: 0;    
+    overflow-x: auto;
+    overflow-y: auto; 
+    scrollbar-width: none;
+    box-sizing: border-box;
+    scrollbar-color: #00ff00 black;
+    box-sizing: border-box;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {display: none;}
+
+h1{font-size: 40px;}
+
+h2{font-size: 20px;}
+
+#console {
+    width: 585px;
+    height: 450px;
+    border: 1px solid #00ff00;
+    padding: 10px;
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: pre; 
+    font-family: monospace;
+    font-size: 16.5px; 
+    box-sizing: border-box;  
+    margin: auto;
+    scrollbar-color: #00ff00 black;
+}
+
+#randMessages{
+    font-size: 20px;
+    margin-top:1px;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    width: 585px;
+    margin: auto;
+    padding: 10px;
+    margin-top: 1px; 
+    display: block;
+    background-color: black;
+    color:  #00ff00;
+    border: 1px solid  #00ff00;
+    font-family: monospace;
+    font-size: 16.5px;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus {
+  border: 1px solid  #00ff00;
+  outline: none;
+  width: 585px;
+  font-size: 16.5px;
+}
+
+button{
+  border: 1px solid  #00ff00;
+  background-color: black;
+  color: #00ff00;
+  font-size: 18px; 
+  font-family: monospace;
+  border-radius: 15px;
+}
+button:hover{
+  border: 1px solid  black;
+  background-color: #00ff00;
+  color: black;
+  font-size: 18px; 
+  font-family: monospace;  
+}
+
+#button-container {
+    width: 585px;
+    margin: 1px auto;
+    border: 1px solid #00ff00;
+    box-sizing: border-box;
+}
+
+#function-pad,.operand-pad  {
+    width: 585px;
+    margin: 5px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.button-row,.operand-row {
+    display: flex;
+    gap: 2px;
+    margin: 2px;
+}
+
+.wide-btn,.op-btn {
+    width: 250px;
+    height: 45px;
+    background-color: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    font-family: monospace;
+    font-size: 20px;
+    box-sizing: border-box;
+    margin-right: 3px;
+}
+
+.wide-btn:hover,.op-btn:hover {
+    background-color: #00ff00;
+    color: black;
+}
+
+.op-btn.full {
+    width: 100%;
+}
