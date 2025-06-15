@@ -3,7 +3,7 @@ import {
   getAllHistory,
   getOneHistory,
   deleteHistory
-} from './supabaseCalc.js'
+} from './supabaseCalcDB.js'
 
 export const calcUI = `╔═══════════════════════════════════════════╗
 ║ ░█▀▀░█▀█░█░░░█▀▀░█░█░█░░░█▀█░▀█▀░█▀█░█▀▄  ║
