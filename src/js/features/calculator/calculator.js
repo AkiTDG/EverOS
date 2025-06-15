@@ -33,13 +33,14 @@ export async function calculator(expression) {
   try {
     const cleanExpression = expression.trim()
 
+    // Handle history commands
     if (cleanExpression.startsWith('calc hist')) {
       const args = cleanExpression.split(' ')
       const subCommand = args[2]
 
       if (subCommand === '*') {
         const data = await getAllHistory()
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
           window.writeToConsole('No history found.')
         } else {
           data.forEach(record => {
@@ -55,7 +56,7 @@ export async function calculator(expression) {
       } else if (subCommand) {
         const op = args.slice(2).join(' ')
         const data = await getOneHistory(op)
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
           window.writeToConsole(`No history for "${op}".`)
         } else {
           data.forEach(record => {
@@ -69,6 +70,7 @@ export async function calculator(expression) {
       }
     }
 
+    // Basic math expression handling
     const mathExpression = cleanExpression.replace(/\s+/g, '')
     if (!/^[0-9+\-*/().%]+$/.test(mathExpression)) {
       throw new Error('Invalid characters.')
@@ -80,6 +82,7 @@ export async function calculator(expression) {
 
     window.writeToConsole(`= ${result}`)
 
+    // Log to Supabase
     await logCalculation(mathExpression, result.toString())
 
   } catch (error) {
