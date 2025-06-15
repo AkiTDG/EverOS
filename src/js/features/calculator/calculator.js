@@ -1,3 +1,10 @@
+import {
+  logCalculation,
+  getAllHistory,
+  getOneHistory,
+  deleteHistory
+} from './supabaseCalc.js'
+
 export const calcUI = `╔═══════════════════════════════════════════╗
 ║ ░█▀▀░█▀█░█░░░█▀▀░█░█░█░░░█▀█░▀█▀░█▀█░█▀▄  ║
 ║ ░█░░░█▀█░█░░░█░░░█░█░█░░░█▀█░░█░░█░█░█▀▄  ║
@@ -22,24 +29,16 @@ export const calcUI = `╔══════════════════
 +---------------------------------------------------------+
 `
 
-async function callCalcAPI(payload) {
-  const res = await fetch('/.netlify/functions/calc-api', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
-  return await res.json()
-}
-
 export async function calculator(expression) {
   try {
     const cleanExpression = expression.trim()
+
     if (cleanExpression.startsWith('calc hist')) {
       const args = cleanExpression.split(' ')
       const subCommand = args[2]
 
       if (subCommand === '*') {
-        const data = await callCalcAPI({ type: 'getAll' })
+        const data = await getAllHistory()
         if (data.length === 0) {
           window.writeToConsole('No history found.')
         } else {
@@ -50,12 +49,12 @@ export async function calculator(expression) {
         return
       } else if (subCommand === 'del' && args[3]) {
         const op = args.slice(3).join(' ')
-        await callCalcAPI({ type: 'delete', expression: op })
+        await deleteHistory(op)
         window.writeToConsole(`Deleted "${op}" from history.`)
         return
       } else if (subCommand) {
         const op = args.slice(2).join(' ')
-        const data = await callCalcAPI({ type: 'getOne', expression: op })
+        const data = await getOneHistory(op)
         if (data.length === 0) {
           window.writeToConsole(`No history for "${op}".`)
         } else {
@@ -81,11 +80,9 @@ export async function calculator(expression) {
 
     window.writeToConsole(`= ${result}`)
 
-    await callCalcAPI({
-      type: 'upsert',
-      expression: mathExpression,
-      result: result.toString(),
-    })
+    // Save to history using Netlify backend
+    await logCalculation(mathExpression, result.toString())
+
   } catch (error) {
     console.error(error)
     window.writeToConsole('Statement error')
