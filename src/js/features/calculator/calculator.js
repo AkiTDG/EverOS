@@ -1,4 +1,3 @@
-import { supabase } from './supabaseCalcDB.js'
 export const calcUI = `╔═══════════════════════════════════════════╗
 ║ ░█▀▀░█▀█░█░░░█▀▀░█░█░█░░░█▀█░▀█▀░█▀█░█▀▄  ║
 ║ ░█░░░█▀█░█░░░█░░░█░█░█░░░█▀█░░█░░█░█░█▀▄  ║
@@ -21,20 +20,26 @@ export const calcUI = `╔══════════════════
 | [calc hist del X : Delete operation X from history.   ] |
 |=========================================================|
 +---------------------------------------------------------+
-
 `
+
+async function callCalcAPI(payload) {
+  const res = await fetch('/.netlify/functions/calc-api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  return await res.json()
+}
 
 export async function calculator(expression) {
   try {
     const cleanExpression = expression.trim()
     if (cleanExpression.startsWith('calc hist')) {
       const args = cleanExpression.split(' ')
-      const subCommand = args[2] 
+      const subCommand = args[2]
 
       if (subCommand === '*') {
-        const { data, error } = await supabase.from('calc_history').select('*')
-        if (error) throw error
-
+        const data = await callCalcAPI({ type: 'getAll' })
         if (data.length === 0) {
           window.writeToConsole('No history found.')
         } else {
@@ -45,15 +50,12 @@ export async function calculator(expression) {
         return
       } else if (subCommand === 'del' && args[3]) {
         const op = args.slice(3).join(' ')
-        const { error } = await supabase.from('calc_history').delete().eq('expression', op)
-        if (error) throw error
+        await callCalcAPI({ type: 'delete', expression: op })
         window.writeToConsole(`Deleted "${op}" from history.`)
         return
       } else if (subCommand) {
         const op = args.slice(2).join(' ')
-        const { data, error } = await supabase.from('calc_history').select('*').eq('expression', op)
-        if (error) throw error
-
+        const data = await callCalcAPI({ type: 'getOne', expression: op })
         if (data.length === 0) {
           window.writeToConsole(`No history for "${op}".`)
         } else {
@@ -67,6 +69,7 @@ export async function calculator(expression) {
         return
       }
     }
+
     const mathExpression = cleanExpression.replace(/\s+/g, '')
     if (!/^[0-9+\-*/().%]+$/.test(mathExpression)) {
       throw new Error('Invalid characters.')
@@ -78,18 +81,11 @@ export async function calculator(expression) {
 
     window.writeToConsole(`= ${result}`)
 
-    const { error } = await supabase
-      .from('calc_history')
-      .upsert(
-        {
-          expression: mathExpression,
-          result: result.toString(),
-          created_at: new Date().toISOString()
-        },
-        { onConflict: 'expression' }
-      )
-
-    if (error) throw error
+    await callCalcAPI({
+      type: 'upsert',
+      expression: mathExpression,
+      result: result.toString(),
+    })
   } catch (error) {
     console.error(error)
     window.writeToConsole('Statement error')
