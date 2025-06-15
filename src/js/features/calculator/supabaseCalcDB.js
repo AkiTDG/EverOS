@@ -1,6 +1,1 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
-
-const supabaseUrl = 'https://zmnlctsroufobhdyntsw.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbmxjdHNyb3Vmb2JoZHludHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MDEwOTIsImV4cCI6MjA2NTQ3NzA5Mn0.rG71SRERVjnIrQDcQbqGKwiFUsO3mhQ37bPXnFrenjM'
-
-export const supabase = createClient(supabaseUrl, supabaseKey)
+const i=b;(function(c,d){const h=b,e=c();while(!![]){try{const f=parseInt(h(0x95))/0x1+parseInt(h(0x90))/0x2*(parseInt(h(0x8f))/0x3)+parseInt(h(0x8d))/0x4*(parseInt(h(0x92))/0x5)+parseInt(h(0x97))/0x6+parseInt(h(0x91))/0x7+parseInt(h(0x94))/0x8+-parseInt(h(0x93))/0x9;if(f===d)break;else e['push'](e['shift']());}catch(g){e['push'](e['shift']());}}}(a,0x9e161));import{createClient}from'https://esm.sh/@supabase/supabase-js';function a(){const j=['22239090qGGCxG','1254400AFYtZy','866638rkVyMG','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptbmxjdHNyb3Vmb2JoZHludHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MDEwOTIsImV4cCI6MjA2NTQ3NzA5Mn0.rG71SRERVjnIrQDcQbqGKwiFUsO3mhQ37bPXnFrenjM','2196084IPtaoY','5012YvBvjF','https://zmnlctsroufobhdyntsw.supabase.co','771jnXgZR','1274MIjvzl','2414636Hwzpbr','4870PALyWS'];a=function(){return j;};return a();}const supabaseUrl=i(0x8e),supabaseKey=i(0x96);function b(c,d){const e=a();return b=function(f,g){f=f-0x8d;let h=e[f];return h;},b(c,d);}export const supabase=createClient(supabaseUrl,supabaseKey);
