@@ -1,11 +1,7 @@
-import {
-  logCalculation,
-  getAllHistory,
-  getOneHistory,
-  deleteHistory
-} from './supabaseCalcDB.js'
+import { supabase } from './supabaseCalcDB.js'
 
-export const calcUI = `╔═══════════════════════════════════════════╗
+export const calcUI = `
+╔═══════════════════════════════════════════╗
 ║ ░█▀▀░█▀█░█░░░█▀▀░█░█░█░░░█▀█░▀█▀░█▀█░█▀▄  ║
 ║ ░█░░░█▀█░█░░░█░░░█░█░█░░░█▀█░░█░░█░█░█▀▄  ║
 ║ ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀  ║
@@ -22,9 +18,9 @@ export const calcUI = `╔══════════════════
 | [%: Modulus. Takes division remainder as result.      ] |
 |                                                         |
 | <==History Commands==>                                  |
-| [calc hist *     : Show all calculation history.      ] |
-| [calc hist X     : Show a specific operation X.       ] |
-| [calc hist del X : Delete operation X from history.   ] |
+| [calc hist *   : Show all history]                      |
+| [calc hist OP  : Show specific OP history]              |
+| [calc hist del OP : Delete specific OP from history]    |
 |=========================================================|
 +---------------------------------------------------------+
 `
@@ -33,14 +29,18 @@ export async function calculator(expression) {
   try {
     const cleanExpression = expression.trim()
 
-    // Handle history commands
+    // ✅ Handle history commands
     if (cleanExpression.startsWith('calc hist')) {
       const args = cleanExpression.split(' ')
-      const subCommand = args[2]
+      const subCommand = args[2] ? args[2] : args[1]
 
       if (subCommand === '*') {
-        const data = await getAllHistory()
-        if (!data || data.length === 0) {
+        const { data, error } = await supabase
+          .from('calc_history')
+          .select('*')
+        if (error) throw error
+
+        if (data.length === 0) {
           window.writeToConsole('No history found.')
         } else {
           data.forEach(record => {
@@ -50,13 +50,22 @@ export async function calculator(expression) {
         return
       } else if (subCommand === 'del' && args[3]) {
         const op = args.slice(3).join(' ')
-        await deleteHistory(op)
+        const { error } = await supabase
+          .from('calc_history')
+          .delete()
+          .eq('expression', op)
+        if (error) throw error
         window.writeToConsole(`Deleted "${op}" from history.`)
         return
-      } else if (subCommand) {
-        const op = args.slice(2).join(' ')
-        const data = await getOneHistory(op)
-        if (!data || data.length === 0) {
+      } else {
+        const op = args.slice(2).join(' ') || args.slice(1).join(' ')
+        const { data, error } = await supabase
+          .from('calc_history')
+          .select('*')
+          .eq('expression', op)
+        if (error) throw error
+
+        if (data.length === 0) {
           window.writeToConsole(`No history for "${op}".`)
         } else {
           data.forEach(record => {
@@ -64,13 +73,8 @@ export async function calculator(expression) {
           })
         }
         return
-      } else {
-        window.writeToConsole('Invalid history command.')
-        return
       }
     }
-
-    // Basic math expression handling
     const mathExpression = cleanExpression.replace(/\s+/g, '')
     if (!/^[0-9+\-*/().%]+$/.test(mathExpression)) {
       throw new Error('Invalid characters.')
@@ -81,12 +85,21 @@ export async function calculator(expression) {
     if (!isFinite(result)) throw new Error('Math error')
 
     window.writeToConsole(`= ${result}`)
+    const { error } = await supabase
+      .from('calc_history')
+      .upsert(
+        {
+          expression: mathExpression,
+          result: result.toString(),
+          created_at: new Date().toISOString()
+        },
+        { onConflict: 'expression' }
+      )
 
-    // Log to Supabase
-    await logCalculation(mathExpression, result.toString())
+    if (error) throw error
 
   } catch (error) {
     console.error(error)
-    window.writeToConsole(`Statement error: ${error.message}`)
+    window.writeToConsole('Statement error')
   }
 }
