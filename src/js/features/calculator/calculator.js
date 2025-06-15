@@ -85,6 +85,7 @@ export async function calculator(expression) {
 
   } catch (error) {
     console.error(error)
-    window.writeToConsole('Statement error')
+    window.writeToConsole('Statement error: ' + error.message)
+
   }
 }
