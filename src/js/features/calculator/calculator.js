@@ -1,6 +1,7 @@
 import { supabase } from './supabaseCalcDB.js'
 
-export const calcUI = `╔═══════════════════════════════════════════╗
+export const calcUI = `
+╔═══════════════════════════════════════════╗
 ║ ░█▀▀░█▀█░█░░░█▀▀░█░█░█░░░█▀█░▀█▀░█▀█░█▀▄  ║
 ║ ░█░░░█▀█░█░░░█░░░█░█░█░░░█▀█░░█░░█░█░█▀▄  ║
 ║ ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀  ║
@@ -21,18 +22,14 @@ export const calcUI = `╔══════════════════
 | [calc hist OP  : Show specific OP history]              |
 | [calc hist del OP : Delete specific OP from history]    |
 |=========================================================|
-+---------------------------------------------------------+
-`
++---------------------------------------------------------+`
 
 export async function calculator(expression) {
   try {
-    const cleanExpression = expression.trim()
-
-    // ✅ Handle history commands
-    if (cleanExpression.startsWith('calc hist')) {
+    const cleanExpression = expression.trim().toLowerCase()
+    if (cleanExpression.toLowerCase().startsWith('calc hist')){
       const args = cleanExpression.split(' ')
-      const subCommand = args[2] ? args[2] : args[1]
-
+      const subCommand = args[2]?.toLowerCase() || args[1]?.toLowerCase()
       if (subCommand === '*') {
         const { data, error } = await supabase
           .from('calc_history')
