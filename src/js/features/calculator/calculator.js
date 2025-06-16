@@ -49,7 +49,7 @@ export async function calculator(expression) {
         const { error } = await supabase
           .from('calc_history')
           .delete()
-          .eq('expression', op)
+          .neq('expression', '')
         if (error) throw error
         window.writeToConsole(`Deleted "${op}" from history.`)
         return
