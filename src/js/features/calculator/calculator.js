@@ -20,8 +20,7 @@ export const calcUI = `
 | <==History Commands==>                                  |
 | [calc hist *      : Show all history                  ] |
 | [calc hist OP     : Show specific OP history          ] |
-| [calc hist del OP : Delete specific OP from history   ] |
-| [calc hist del *  : Delete all OP history             ] |
+| [calc hist del OP : Delete specific OP/s from history ] |
 |=========================================================|
 +---------------------------------------------------------+`
 
@@ -45,16 +44,40 @@ export async function calculator(expression) {
           })
         }
         return
-      } else if (subCommand === 'del' && args[3]) {
-        const op = args.slice(3).join(' ')
-        const { error } = await supabase
-          .from('calc_history')
-          .delete()
-          .neq('expression', '')
-        if (error) throw error
-        window.writeToConsole(`Deleted "${op}" from history.`)
-        return
-      } else {
+      } 
+      else if (subCommand === 'del' && args[3]) {
+  const inputOps = args.slice(3)
+  const opsToDelete = []
+
+  inputOps.forEach(item => {
+    const rangeMatch = item.match(/^(-?\d+(?:\.\d+)?)-(-?\d+(?:\.\d+)?)$/)
+    if (rangeMatch) {
+      const start = parseFloat(rangeMatch[1])
+      const end = parseFloat(rangeMatch[2])
+      if (!isNaN(start) && !isNaN(end) && start <= end) {
+        const step = (end - start) % 1 === 0 ? 1 : 0.1
+        for (let i = start; i <= end + 1e-8; i += step) {
+          opsToDelete.push(Number(i.toFixed(10)).toString())
+        }
+      }
+    } else {
+      opsToDelete.push(item)
+    }
+  })
+
+  const uniqueOpsToDelete = [...new Set(opsToDelete)]
+
+  const { error } = await supabase
+    .from('calc_history')
+    .delete()
+    .in('expression', uniqueOpsToDelete)
+
+  if (error) throw error
+  window.writeToConsole(`Deleted [${uniqueOpsToDelete.join(', ')}] from history.`)
+  return
+}
+
+      else {
         const op = args.slice(2).join(' ') || args.slice(1).join(' ')
         const { data, error } = await supabase
           .from('calc_history')
